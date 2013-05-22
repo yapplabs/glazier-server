@@ -26,13 +26,13 @@ That will give you access to the a client ID and client secret for your new Gith
 
 ## Start the server
 
-    rails server -p 3040
+    bundle exec rails server -p 3040
 
 # Running specs
 
 glazier-server uses RSpec for unit tests. To run them:
 
-    rake
+    bundle exec rake
 
 To automatically execute specs as you update code and specs:
 
