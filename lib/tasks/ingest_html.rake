@@ -23,15 +23,21 @@ namespace :glazier do
 
     puts "To set this as the current index, use:"
     puts "  bundle exec rake glazier:set_current[#{fingerprint}]"
+
+    ENV['GLAZIER_INGEST_FINGERPRINT'] = fingerprint
   end
 
   desc "set a given html entry as current"
   task :set_current, [:fingerprint] => :environment do |t, args|
-    key = "index:#{args[:fingerprint]}"
+    fingerprint = args[:fingerprint] || ENV['GLAZIER_INGEST_FINGERPRINT']
+    key = "index:#{fingerprint}"
     target = PageTemplate.find_by_key(key)
     current = PageTemplate.find_or_create_by_key("index:current")
     current.value = target.value
     current.save!
     puts "Success!"
   end
+
+  desc "ingest and set current"
+  task :ingest_as_current, [:file_path] => [:ingest, :set_current]
 end
