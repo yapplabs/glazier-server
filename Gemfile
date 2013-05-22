@@ -9,6 +9,9 @@ gem 'rails-api'
 
 gem 'sqlite3'
 
+group :development, :test do
+  gem 'rspec-rails', '~> 2.0'
+end
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
