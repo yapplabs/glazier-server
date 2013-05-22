@@ -50,6 +50,7 @@ GlazierServer::Application.routes.draw do
   # just remember to delete public/index.html.
   get '/oauth/github/callback', to: 'oauth/github#callback'
   post '/oauth/github/exchange', to: 'oauth/github#exchange'
+  get '/api/' => 'apps#index'
   root :to => 'apps#index'
 
   # See how all your routes lay out with "rake routes"
