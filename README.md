@@ -19,8 +19,8 @@ Create a Github app for your Glazier instance
  -> http://github.com/settings/applications/new
 
 Enter anything you like for Application Name. ("glazier-dev", perhaps?)
-For Main URL, enter "http://localhost:3040"
-For Callback URL, enter "http://localhost:3040/oauth/github/callback"
+For Main URL, enter "http://localhost:8000"
+For Callback URL, enter "http://localhost:8000/oauth/github/callback"
 
 That will give you access to the a client ID and client secret for your new Github application. Add environment variables with these values: **GLAZIER_GITHUB_CLIENT_ID** and **GLAZIER_GITHUB_CLIENT_SECRET**.
 
