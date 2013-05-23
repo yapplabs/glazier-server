@@ -8,6 +8,12 @@ A Rails-based server for [yapplabs/glazier](https://github.com/yapplabs/glazier)
 
 ## Install dependencies
 
+Postgres 9.2.x
+http://postgresapp.com/
+
+Ruby 1.9.3
+http://www.ruby-lang.org/en/downloads/
+
 ````
 gem install bundler
 bundle install
@@ -23,6 +29,13 @@ For Main URL, enter "http://localhost:8000"
 For Callback URL, enter "http://localhost:8000/oauth/github/callback"
 
 That will give you access to the a client ID and client secret for your new Github application. Add environment variables with these values: **GLAZIER_GITHUB_CLIENT_ID** and **GLAZIER_GITHUB_CLIENT_SECRET**.
+
+## Create the DB
+
+````
+rake db:create
+rake db:migrate
+````
 
 ## Start the server
 
