@@ -7,3 +7,10 @@ require File.expand_path('../config/application', __FILE__)
 GlazierServer::Application.load_tasks
 
 task :ci => ["db:migrate", "spec"]
+
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:spec)
+
+task test: :spec
+task default: :spec
