@@ -11,11 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130522195433) do
+ActiveRecord::Schema.define(:version => 20130523220519) do
 
   create_table "page_templates", :force => true do |t|
     t.string   "key"
-    t.string   "value"
+    t.text     "value"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
