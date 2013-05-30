@@ -51,6 +51,11 @@ GlazierServer::Application.routes.draw do
   get '/api/oauth/github/callback', to: 'oauth/github#callback'
   post '/api/oauth/github/exchange', to: 'oauth/github#exchange'
   get '/api/' => 'apps#index'
+
+
+  get "/api/cards/:card_id" => 'cards#show'
+  post "/api/cards/:card_id/user" => 'cards#update_user_data'
+
   root :to => 'apps#index'
 
   # See how all your routes lay out with "rake routes"

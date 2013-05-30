@@ -11,7 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130523220519) do
+ActiveRecord::Schema.define(:version => 20130530213906) do
+
+  create_table "card_entries", :force => true do |t|
+    t.string   "card_id",    :limit => nil
+    t.string   "user_id",    :limit => nil
+    t.string   "access"
+    t.string   "key"
+    t.text     "value"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  add_index "card_entries", ["card_id", "user_id"], :name => "index_card_entries_on_card_id_and_user_id"
 
   create_table "page_templates", :force => true do |t|
     t.string   "key"
