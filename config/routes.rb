@@ -55,6 +55,7 @@ GlazierServer::Application.routes.draw do
 
   get "/api/cards/:card_id" => 'cards#show'
   post "/api/cards/:card_id/user" => 'cards#update_user_data'
+  delete "/api/cards/:card_id/user" => 'cards#remove_user_data'
 
   root :to => 'apps#index'
 

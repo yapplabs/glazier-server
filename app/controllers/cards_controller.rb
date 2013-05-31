@@ -1,4 +1,6 @@
 class CardsController < ApplicationController
+  class InvalidAccessParam < StandardError; end
+
   def update_user_data
     CardEntry.transaction do
       params[:data].each do |key, value|
@@ -22,6 +24,16 @@ class CardsController < ApplicationController
     else
       render json: {card: {"private" => {}}}
     end
+  end
+
+  def remove_user_data
+    raise InvalidAccessParam unless CardEntry.valid_access_type? params[:access]
+
+    card_entry = CardEntry.where(params.slice(:card_id, :user_id, :key, :access)).first
+    if card_entry
+      card_entry.destroy
+    end
+    render json: {}
   end
 
   private
