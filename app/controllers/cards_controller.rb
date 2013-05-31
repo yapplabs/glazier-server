@@ -1,5 +1,8 @@
 class CardsController < ApplicationController
   class InvalidAccessParam < StandardError; end
+  class AuthenticationRequired < StandardError; end
+
+  before_filter :authenticate_user, except: :show
 
   def update_user_data
     CardEntry.transaction do
@@ -16,14 +19,19 @@ class CardsController < ApplicationController
   end
 
   def show
-    card_entry = CardEntry.where(params.slice(:card_id, :user_id, :key)).first
-    if card_entry
-      data = {}
-      data[card_entry.key] = card_entry.value
-      render json: {card: {"private" => data}}
-    else
-      render json: {card: {"private" => {}}}
+    private_data = {}
+
+    if current_user.present?
+      CardEntry.where(card_id: params[:card_id], user_id: current_user.id, access: 'private').each do |card_entry|
+        private_data[card_entry.key] = card_entry.value
+      end
     end
+
+    # CardEntry.where(card_id: params[:card_id], access: 'public').each do |card_entry|
+    #   public_data...
+    # end
+
+    render json: {card: {"private" => private_data}}
   end
 
   def remove_user_data
@@ -38,8 +46,14 @@ class CardsController < ApplicationController
 
   private
 
+  def authenticate_user
+    unless current_user.present?
+      raise AuthenticationRequired
+    end
+  end
+
   # mock
   def current_user
-    Struct.new(:id).new
+    nil
   end
 end
