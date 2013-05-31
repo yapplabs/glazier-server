@@ -58,7 +58,7 @@ GlazierServer::Application.routes.draw do
   delete "/api/cards/:card_id/user" => 'cards#remove_user_data'
 
   scope '/api' do
-    resource :session, only: [:create]
+    resource :session, only: [:create, :destroy]
   end
 
   root :to => 'apps#index'

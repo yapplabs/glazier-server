@@ -31,6 +31,10 @@ module Services
       http.use_ssl = true
       github_response = http.request_get(uri.path)
 
+      if github_response.code == "401"
+        raise "Bad credentials"
+      end
+
       JSON.parse(github_response.body)
     end
 
