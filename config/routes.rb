@@ -57,6 +57,10 @@ GlazierServer::Application.routes.draw do
   post "/api/cards/:card_id/user" => 'cards#update_user_data'
   delete "/api/cards/:card_id/user" => 'cards#remove_user_data'
 
+  scope '/api' do
+    resource :session, only: [:create]
+  end
+
   root :to => 'apps#index'
 
   # See how all your routes lay out with "rake routes"

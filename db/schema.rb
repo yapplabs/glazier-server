@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130530213906) do
+ActiveRecord::Schema.define(:version => 20130531194536) do
 
   create_table "card_entries", :force => true do |t|
     t.string   "card_id",    :limit => nil
@@ -33,5 +33,15 @@ ActiveRecord::Schema.define(:version => 20130530213906) do
   end
 
   add_index "page_templates", ["key"], :name => "index_page_templates_on_key", :unique => true
+
+  create_table "users", :force => true do |t|
+    t.string   "github_id"
+    t.string   "github_login"
+    t.string   "email"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "users", ["github_id"], :name => "index_users_on_github_id", :unique => true
 
 end
