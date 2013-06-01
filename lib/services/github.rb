@@ -27,7 +27,7 @@ module Services
       uri = URI.parse("https://api.github.com/user?access_token=#{access_token}")
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
-      github_response = http.request_get(uri.path)
+      github_response = http.request_get(uri.path + '?' + uri.query)
 
       if github_response.code == "401"
         raise "Bad credentials"
