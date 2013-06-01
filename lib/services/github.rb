@@ -24,8 +24,6 @@ module Services
     end
 
     def self.get_user_data(access_token)
-      get("https://api.github.com/user", {:params => {:access_token => access_token}})
-
       uri = URI.parse("https://api.github.com/user?access_token=#{access_token}")
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
