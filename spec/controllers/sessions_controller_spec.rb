@@ -5,9 +5,9 @@ describe SessionsController do
     it 'creates a user record for a github user who has not logged in before using the github access token' do
       Services::Github.stub(:get_user_data) do
         {
-          id: '1234',
-          login: 'stefanpenner',
-          email: 'stefanpenner@gmail.com'
+          'id' => 1234,
+          'login' => 'stefanpenner',
+          'email' => 'stefanpenner@gmail.com'
         }
       end
 
