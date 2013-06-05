@@ -63,6 +63,8 @@ GlazierServer::Application.routes.draw do
 
   root :to => 'apps#index'
 
+  get "/:github_user/:github_repo" => 'apps#index'
+
   # See how all your routes lay out with "rake routes"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
