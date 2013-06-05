@@ -6,7 +6,7 @@ require File.expand_path('../config/application', __FILE__)
 
 GlazierServer::Application.load_tasks
 
-task :ci => ["db:setup", "spec"]
+task :ci => ["db:setup", "db:test:prepare", "spec"]
 
 
 if Rails.env.development? or Rails.env.test?
