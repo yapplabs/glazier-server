@@ -6,7 +6,9 @@ require File.expand_path('../config/application', __FILE__)
 
 GlazierServer::Application.load_tasks
 
-task :ci => ["db:reset", "spec"]
+task :ci => 'db:setup' do
+  sh 'rspec --no-drb --order random'
+end
 
 
 if Rails.env.development? or Rails.env.test?
