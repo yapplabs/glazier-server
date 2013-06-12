@@ -36,6 +36,10 @@ module GlazierServer
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
 
+    # rails-api defaults to not using session unless api_only is false and session_store is provided
+    config.api_only = false
+    config.session_store = ActionDispatch::Session::CookieStore
+
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 

@@ -52,8 +52,7 @@ class CardsController < ApplicationController
     end
   end
 
-  # mock
   def current_user
-    nil
+    User.find(session[:user_id])
   end
 end
