@@ -34,15 +34,15 @@ describe CardsController do
   describe "When a user is logged in" do
     before do
       controller.stub(:current_user) do
-        bob = Struct.new(:id).new
-        bob.id = 'bob123'
+        bob = Struct.new(:github_id).new
+        bob.github_id = 123
         bob
       end
     end
 
     describe "#show" do
       it "returns http success" do
-        CardEntry.create(card_id: 'abc', key: 'mykey', user_id: 'bob123', value: 'my value', access: 'private')
+        CardEntry.create(card_id: 'abc', key: 'mykey', value: 'my value', access: 'private') {|u| u.github_id = 123 }
 
         get :show, card_id: 'abc'
         response.should be_success
@@ -92,7 +92,7 @@ describe CardsController do
 
     describe '#remove_user_data' do
       it "removes a CardEntry if one matches" do
-        CardEntry.create(key: 'was-added', access: 'private', card_id: 'abc', user_id: 'bob123')
+        CardEntry.create(key: 'was-added', access: 'private', card_id: 'abc') {|u| u.github_id = 123 }
 
         lambda {
           delete :remove_user_data, key: 'was-added', access: 'private', card_id: 'abc'

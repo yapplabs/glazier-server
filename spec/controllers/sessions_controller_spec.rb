@@ -20,8 +20,7 @@ describe SessionsController do
 
       json = JSON.parse(response.body)
       json['user'].should == {
-        'id' => new_user.id,
-        'github_id' => '1234',
+        'github_id' => 1234,
         'github_login' => 'stefanpenner'
       }
 

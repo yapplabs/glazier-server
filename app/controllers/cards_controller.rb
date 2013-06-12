@@ -10,7 +10,7 @@ class CardsController < ApplicationController
         CardEntry.add_or_update(
           access: params[:access],
           card_id: params[:card_id],
-          user_id: current_user.id,
+          github_id: current_user.github_id,
           key: key,
           value: value
         )
@@ -22,7 +22,7 @@ class CardsController < ApplicationController
     private_data = {}
 
     if current_user.present?
-      CardEntry.where(card_id: params[:card_id], user_id: current_user.id, access: 'private').each do |card_entry|
+      CardEntry.where(card_id: params[:card_id], github_id: current_user.github_id, access: 'private').each do |card_entry|
         private_data[card_entry.key] = card_entry.value
       end
     end
@@ -37,7 +37,12 @@ class CardsController < ApplicationController
   def remove_user_data
     raise InvalidAccessParam unless CardEntry.valid_access_type? params[:access]
 
-    card_entry = CardEntry.where(params.slice(:card_id, :user_id, :key, :access)).first
+    card_entry = CardEntry.where(
+      card_id: params[:card_id],
+      github_id: current_user.github_id,
+      key: params[:key],
+      access: params[:access]
+    ).first
     if card_entry
       card_entry.destroy
     end
@@ -53,6 +58,6 @@ class CardsController < ApplicationController
   end
 
   def current_user
-    User.find_by_id(session[:user_id])
+    User.find(session[:user_id]) if session[:user_id]
   end
 end

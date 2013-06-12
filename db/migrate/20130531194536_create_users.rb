@@ -1,13 +1,18 @@
 class CreateUsers < ActiveRecord::Migration
   def change
-    create_table :users do |t|
-      t.string :github_id
-      t.string :github_login
-      t.string :email
+    create_table :users, :id => false do |t|
+      t.integer :github_id, :limit => 8
+      t.text    :github_access_token
+      t.text    :github_login
+      t.text    :name
+      t.text    :email
+      t.text    :gravatar_id
 
       t.timestamps
     end
 
-    add_index :users, :github_id, unique: true
+    execute <<-SQL
+      ALTER TABLE users ADD PRIMARY KEY (github_id);
+    SQL
   end
 end

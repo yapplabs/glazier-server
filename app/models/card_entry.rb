@@ -1,6 +1,6 @@
 class CardEntry < ActiveRecord::Base
   ACCESS_TYPES = ["private", "public"]
-  attr_accessible :access, :card_id, :key, :user_id, :value
+  attr_accessible :access, :card_id, :key, :value
   validates_inclusion_of :access, in: ACCESS_TYPES
 
   def self.valid_access_type?(access_type)
@@ -8,12 +8,14 @@ class CardEntry < ActiveRecord::Base
   end
 
   def self.add_or_update(attrs)
-    card_entry = CardEntry.where(attrs.slice(:card_id, :user_id, :key, :access)).first
+    card_entry = CardEntry.where(attrs.slice(:card_id, :github_id, :key, :access)).first
 
     if card_entry
       card_entry.update_attribute :value, attrs[:value]
     else
-      CardEntry.create!(attrs.slice(:card_id, :user_id, :key, :value, :access))
+      CardEntry.create!(attrs.slice(:card_id, :key, :value, :access)) do |entry|
+        entry.github_id = attrs[:github_id]
+      end
     end
   end
 end
