@@ -5,6 +5,7 @@ class SessionsController < ApplicationController
     if params[:github_access_token].blank?
       raise "please provide a github_access_token"
     end
+
     user_data = Services::Github.get_user_data(params.fetch(:github_access_token))
     user = User.find_by_github_id(user_data.fetch('id').to_s)
 
