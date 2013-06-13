@@ -21,14 +21,9 @@ class SessionsController < ApplicationController
       end
     end
 
-    serializable_hash = UserSerializer.new(user).serializable_hash
-    user_json = ActiveSupport::JSON.encode(serializable_hash)
+    self.current_user = user
 
-    # needs to be readable from JS for github XHR
-    # TODO cookie should be secure => true in production and have a domain
-    cookies.permanent.signed[:login] = user_json
-
-    render json: serializable_hash
+    render json: user
   end
 
   def destroy

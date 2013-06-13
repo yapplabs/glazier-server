@@ -20,17 +20,25 @@ describe SessionsController do
 
       json = JSON.parse(response.body)
       json.should == {
-        'email' => 'stefanpenner@gmail.com',
-        'github_access_token' => 'abcd',
-        'github_id' => 1234,
-        'github_login' => 'stefanpenner',
-        'gravatar_id' => nil,
-        'name' => nil
+        'user' => {
+          'email' => 'stefanpenner@gmail.com',
+          'github_access_token' => 'abcd',
+          'github_id' => 1234,
+          'github_login' => 'stefanpenner',
+          'gravatar_id' => nil,
+          'name' => nil
+        }
       }
 
       serializable_hash = UserSerializer.new(new_user).serializable_hash
+      signed_user_json = cookies[:login]
+      digest, user_json = signed_user_json.split('-', 2)
 
-      JSON.parse(signed_cookie(:login)).symbolize_keys.should == serializable_hash
+      ActiveSupport::JSON.decode(user_json, symbolize_keys: true).should == serializable_hash
+
+      controller.instance_eval do
+        current_user.should == new_user
+      end
     end
 
     it 'handles invalid access tokens' do

@@ -56,10 +56,4 @@ class CardsController < ApplicationController
       raise AuthenticationRequired
     end
   end
-
-  def current_user
-    return @current_user if @current_user
-    user_json = cookies[:login]
-    @current_user = ActiveSupport::JSON.decode(user_json, symbolize_keys: true) if user_json
-  end
 end
