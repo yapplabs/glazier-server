@@ -21,12 +21,17 @@ class SessionsController < ApplicationController
       end
     end
 
-    session[:user_id] = user.github_id
+    serializable_hash = UserSerializer.new(user).serializable_hash
+    user_json = ActiveSupport::JSON.encode(serializable_hash)
 
-    render json: user
+    # needs to be readable from JS for github XHR
+    # TODO cookie should be secure => true in production and have a domain
+    cookies.permanent.signed[:login] = user_json
+
+    render json: serializable_hash
   end
 
   def destroy
-    session[:user_id] = nil
+    cookies.delete(:login)
   end
 end

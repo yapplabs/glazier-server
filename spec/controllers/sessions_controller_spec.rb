@@ -19,12 +19,18 @@ describe SessionsController do
       new_user = User.last
 
       json = JSON.parse(response.body)
-      json['user'].should == {
+      json.should == {
+        'email' => 'stefanpenner@gmail.com',
+        'github_access_token' => 'abcd',
         'github_id' => 1234,
-        'github_login' => 'stefanpenner'
+        'github_login' => 'stefanpenner',
+        'gravatar_id' => nil,
+        'name' => nil
       }
 
-      session[:user_id].should == new_user.id
+      serializable_hash = UserSerializer.new(new_user).serializable_hash
+
+      JSON.parse(signed_cookie(:login)).symbolize_keys.should == serializable_hash
     end
 
     it 'handles invalid access tokens' do
@@ -48,17 +54,24 @@ describe SessionsController do
     before do
       user = User.create(
         github_login: 'stefanpenner',
-        github_id: 'abcd',
+        github_id: 4321,
         email: 'stefanpenner@gmail.com'
       )
-      session[:user_id] = user.id
+      Services::Github.stub(:get_user_data) do
+        {
+          'id' => 1234,
+          'login' => 'stefanpenner',
+          'email' => 'stefanpenner@gmail.com'
+        }
+      end
+      post :create, github_access_token: 'abcd'
     end
 
     it "clears out the session's user_id" do
       delete :destroy
       response.should be_success
 
-      session[:user_id].should be_nil
+      cookies[:login].should be_nil
     end
   end
 end

@@ -10,7 +10,7 @@ class CardsController < ApplicationController
         CardEntry.add_or_update(
           access: params[:access],
           card_id: params[:card_id],
-          github_id: current_user.github_id,
+          github_id: current_user[:github_id],
           key: key,
           value: value
         )
@@ -22,7 +22,7 @@ class CardsController < ApplicationController
     private_data = {}
 
     if current_user.present?
-      CardEntry.where(card_id: params[:card_id], github_id: current_user.github_id, access: 'private').each do |card_entry|
+      CardEntry.where(card_id: params[:card_id], github_id: current_user[:github_id], access: 'private').each do |card_entry|
         private_data[card_entry.key] = card_entry.value
       end
     end
@@ -39,7 +39,7 @@ class CardsController < ApplicationController
 
     card_entry = CardEntry.where(
       card_id: params[:card_id],
-      github_id: current_user.github_id,
+      github_id: current_user[:github_id],
       key: params[:key],
       access: params[:access]
     ).first
@@ -58,6 +58,8 @@ class CardsController < ApplicationController
   end
 
   def current_user
-    User.find(session[:user_id]) if session[:user_id]
+    return @current_user if @current_user
+    user_json = cookies[:login]
+    @current_user = ActiveSupport::JSON.decode(user_json, symbolize_keys: true) if user_json
   end
 end

@@ -34,9 +34,7 @@ describe CardsController do
   describe "When a user is logged in" do
     before do
       controller.stub(:current_user) do
-        bob = Struct.new(:github_id).new
-        bob.github_id = 123
-        bob
+        {github_id: 123}
       end
     end
 
