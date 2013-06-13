@@ -46,7 +46,7 @@ module Authentication
     return unless secure_compare(digest, generate_digest(secret, user_json))
     user_hash = ActiveSupport::JSON.decode(user_json, symbolize_keys: true) rescue nil
     return unless user_hash
-    User.load(user_hash)
+    User.find(user_hash[:github_id])
   end
 
   # HMAC SHA1
