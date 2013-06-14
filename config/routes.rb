@@ -52,6 +52,9 @@ GlazierServer::Application.routes.draw do
   post '/api/oauth/github/exchange', to: 'oauth/github#exchange'
   get '/api/' => 'apps#index'
 
+  get "/api/dashboards", to: 'dashboards#index'
+
+  get "/api/dashboards/:github_user/:github_repo", to: 'dashboards#show'
 
   get "/api/cards/:card_id" => 'cards#show'
   post "/api/cards/:card_id/user" => 'cards#update_user_data'

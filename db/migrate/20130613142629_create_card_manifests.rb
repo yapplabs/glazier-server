@@ -2,8 +2,8 @@ class CreateCardManifests < ActiveRecord::Migration
   def up
     create_table :card_manifests, id: false do |t|
       t.string :name
-      t.string :url
-      t.text :manifest
+      t.string :url, null: false
+      t.text :manifest, null: false
 
       t.timestamps
     end
