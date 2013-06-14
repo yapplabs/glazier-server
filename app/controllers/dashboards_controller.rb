@@ -4,6 +4,6 @@ class DashboardsController < ApplicationController
   end
 
   def show
-    render json: Dashboard.find(params[:id])
+    render json: Dashboard.find_or_bootstrap(params[:id])
   end
 end
