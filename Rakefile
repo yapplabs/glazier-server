@@ -6,7 +6,7 @@ require File.expand_path('../config/application', __FILE__)
 
 GlazierServer::Application.load_tasks
 
-task :ci => ['db:migrate', :spec]
+task :ci => ['db:create', 'db:migrate', :spec]
 
 if Rails.env.development? or Rails.env.test?
   task default: :spec
