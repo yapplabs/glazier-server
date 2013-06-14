@@ -22,7 +22,16 @@ ActiveRecord::Base.transaction do
     manifest.url = 'http://d4h95iioxf8ji.cloudfront.net/cards/github-issues/manifest.json'
     manifest.manifest = ActiveSupport::JSON.encode(
       jsUrl: '/cards/github-issues.js',
-      consumes: [ 'github:authenticated:read', 'repository', 'unauthenticatedGithubApi', 'identity']
+      consumes: [ 'repository', 'authenticatedGithubApi', 'unauthenticatedGithubApi', 'identity' ]
+    )
+  end
+
+  stars_manifest = CardManifest.create do |manifest|
+    manifest.name = 'yapplabs/github-stars'
+    manifest.url = 'http://d4h95iioxf8ji.cloudfront.net/cards/github-stars/manifest.json'
+    manifest.manifest = ActiveSupport::JSON.encode(
+      jsUrl: '/cards/github-stars.js',
+      consumes: [ 'repository', 'unauthenticatedGithubApi', 'identity' ]
     )
   end
 
@@ -37,6 +46,11 @@ ActiveRecord::Base.transaction do
       pane.id = 'c37b0ba4-cecc-11e2-8fa4-ef3e5db78e4d'
       pane.card_manifest = issues_manifest
     end
+
+    dashboard.panes << Pane.create do |pane|
+      pane.id = 'e66028d8-d477-11e2-ac68-97cedea43709'
+      pane.card_manifest = stars_manifest
+    end
   end
 
   Dashboard.create do |dashboard|
@@ -49,6 +63,11 @@ ActiveRecord::Base.transaction do
     dashboard.panes << Pane.create do |pane|
       pane.id = 'dca13978-cecc-11e2-b9e3-e342ecfc2ff7'
       pane.card_manifest = issues_manifest
+    end
+
+    dashboard.panes << Pane.create do |pane|
+      pane.id = 'f1274314-d477-11e2-9e9a-9f78f0c9dfa7'
+      pane.card_manifest = stars_manifest
     end
   end
 
