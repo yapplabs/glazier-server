@@ -6,15 +6,9 @@ require File.expand_path('../config/application', __FILE__)
 
 GlazierServer::Application.load_tasks
 
-task :ci => 'db:setup' do
-  sh 'rspec --no-drb --order random'
-end
-
+task :ci => ['db:migrate', :spec]
 
 if Rails.env.development? or Rails.env.test?
-  require 'rspec/core/rake_task'
-  RSpec::Core::RakeTask.new(:spec)
-
-  task test: :spec
   task default: :spec
+  task test: :spec
 end
