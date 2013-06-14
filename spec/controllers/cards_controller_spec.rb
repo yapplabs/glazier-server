@@ -5,7 +5,7 @@ describe CardsController do
   describe "when user is not logged in" do
     describe "#show" do
       it "returns a hash with no private data" do
-        get :show, card_id: 'abc'
+        get :show, card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
         response.should be_success
 
         json = JSON.parse(response.body)
@@ -16,7 +16,7 @@ describe CardsController do
     describe '#update_user_data' do
       it "raises an error when there is no user" do
         lambda {
-          post :update_user_data, data: {mykey: 'value'}, access: 'private', card_id: 'abc'
+          post :update_user_data, data: {mykey: 'value'}, access: 'private', card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
         }.should raise_error
       end
     end
@@ -24,7 +24,7 @@ describe CardsController do
     describe '#remove_user_data' do
       it "raises an error when there is no user" do
         lambda {
-          delete :remove_user_data, key: 'value', access: 'private', card_id: 'abc'
+          delete :remove_user_data, key: 'value', access: 'private', card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
         }.should raise_error
       end
     end
@@ -40,9 +40,9 @@ describe CardsController do
 
     describe "#show" do
       it "returns http success" do
-        CardEntry.create(card_id: 'abc', key: 'mykey', value: 'my value', access: 'private') {|u| u.github_id = 123 }
+        CardEntry.create(card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9', key: 'mykey', value: 'my value', access: 'private') {|u| u.github_id = 123 }
 
-        get :show, card_id: 'abc'
+        get :show, card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
         response.should be_success
 
         json = JSON.parse(response.body)
@@ -53,7 +53,7 @@ describe CardsController do
     describe '#update_user_data' do
       it "adds a single private user key/value pair" do
         lambda {
-          post :update_user_data, data: {mykey: 'value'}, access: 'private', card_id: 'abc'
+          post :update_user_data, data: {mykey: 'value'}, access: 'private', card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
           response.should be_success
         }.should change(CardEntry, :count).by 1
 
@@ -63,23 +63,23 @@ describe CardsController do
 
       it "adds multiple private user key/value pairs" do
         lambda {
-          post :update_user_data, data: {mykey: 'value', anotherkey: 'anotherval'}, access: 'private', card_id: 'abc'
+          post :update_user_data, data: {mykey: 'value', anotherkey: 'anotherval'}, access: 'private', card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
           response.should be_success
         }.should change(CardEntry, :count).by 2
       end
 
       it "raises an error with invalid access param" do
         lambda {
-          post :update_user_data, data: {mykey: 'value'}, access: 'hacker', card_id: 'abc'
+          post :update_user_data, data: {mykey: 'value'}, access: 'hacker', card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
         }.should raise_error
       end
 
       it "updates values for keys that already exist" do
-        post :update_user_data, data: {mykey: 'value'}, access: 'private', card_id: 'abc'
+        post :update_user_data, data: {mykey: 'value'}, access: 'private', card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
         response.should be_success
 
         lambda {
-          post :update_user_data, data: {mykey: 'newvalue'}, access: 'private', card_id: 'abc'
+          post :update_user_data, data: {mykey: 'newvalue'}, access: 'private', card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
           response.should be_success
         }.should_not change(CardEntry, :count)
 
@@ -90,24 +90,24 @@ describe CardsController do
 
     describe '#remove_user_data' do
       it "removes a CardEntry if one matches" do
-        CardEntry.create(key: 'was-added', access: 'private', card_id: 'abc') {|u| u.github_id = 123 }
+        CardEntry.create(key: 'was-added', access: 'private', card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9') {|u| u.github_id = 123 }
 
         lambda {
-          delete :remove_user_data, key: 'was-added', access: 'private', card_id: 'abc'
+          delete :remove_user_data, key: 'was-added', access: 'private', card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
           response.should be_success
         }.should change(CardEntry, :count).by(-1)
       end
 
       it "completes silently if no CardEntry matches" do
         lambda {
-          delete :remove_user_data, key: 'never-added', access: 'private', card_id: 'abc'
+          delete :remove_user_data, key: 'never-added', access: 'private', card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
           response.should be_success
         }.should_not change(CardEntry, :count)
       end
 
       it "raises an error with invalid access param" do
         lambda {
-          delete :remove_user_data, key: 'never-added', access: 'haxor', card_id: 'abc'
+          delete :remove_user_data, key: 'never-added', access: 'haxor', card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
         }.should raise_error
       end
     end

@@ -34,7 +34,7 @@ SET default_with_oids = false;
 
 CREATE TABLE card_entries (
     id integer NOT NULL,
-    card_id character varying(255) NOT NULL,
+    card_id uuid NOT NULL,
     access text NOT NULL,
     github_id bigint,
     key text,
@@ -169,6 +169,14 @@ ALTER TABLE ONLY card_manifests
 
 ALTER TABLE ONLY page_templates
     ADD CONSTRAINT page_templates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (github_id);
 
 
 --
