@@ -29,7 +29,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: card_entries; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: card_entries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE card_entries (
@@ -64,7 +64,7 @@ ALTER SEQUENCE card_entries_id_seq OWNED BY card_entries.id;
 
 
 --
--- Name: card_manifests; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: card_manifests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE card_manifests (
@@ -77,7 +77,7 @@ CREATE TABLE card_manifests (
 
 
 --
--- Name: dashboards; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: dashboards; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE dashboards (
@@ -88,7 +88,7 @@ CREATE TABLE dashboards (
 
 
 --
--- Name: dashboards_panes; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: dashboards_panes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE dashboards_panes (
@@ -98,7 +98,7 @@ CREATE TABLE dashboards_panes (
 
 
 --
--- Name: page_templates; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: page_templates; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE page_templates (
@@ -130,7 +130,7 @@ ALTER SEQUENCE page_templates_id_seq OWNED BY page_templates.id;
 
 
 --
--- Name: panes; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: panes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE panes (
@@ -142,7 +142,7 @@ CREATE TABLE panes (
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE schema_migrations (
@@ -151,7 +151,7 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE users (
@@ -181,7 +181,7 @@ ALTER TABLE ONLY page_templates ALTER COLUMN id SET DEFAULT nextval('page_templa
 
 
 --
--- Name: card_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: card_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY card_entries
@@ -189,7 +189,7 @@ ALTER TABLE ONLY card_entries
 
 
 --
--- Name: card_manifests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: card_manifests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY card_manifests
@@ -197,7 +197,7 @@ ALTER TABLE ONLY card_manifests
 
 
 --
--- Name: dashboards_panes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: dashboards_panes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY dashboards_panes
@@ -205,7 +205,7 @@ ALTER TABLE ONLY dashboards_panes
 
 
 --
--- Name: dashboards_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: dashboards_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY dashboards
@@ -213,7 +213,7 @@ ALTER TABLE ONLY dashboards
 
 
 --
--- Name: page_templates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: page_templates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY page_templates
@@ -221,7 +221,7 @@ ALTER TABLE ONLY page_templates
 
 
 --
--- Name: panes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: panes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY panes
@@ -229,7 +229,7 @@ ALTER TABLE ONLY panes
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY users
@@ -237,21 +237,21 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: index_card_entries_on_card_id_and_access_and_github_id_and_key; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_card_entries_on_card_id_and_access_and_github_id_and_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_card_entries_on_card_id_and_access_and_github_id_and_key ON card_entries USING btree (card_id, access, github_id, key);
 
 
 --
--- Name: index_page_templates_on_key; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: index_page_templates_on_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_page_templates_on_key ON page_templates USING btree (key);
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);

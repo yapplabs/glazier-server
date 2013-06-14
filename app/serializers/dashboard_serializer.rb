@@ -1,4 +1,4 @@
 class DashboardSerializer < ActiveModel::Serializer
-  attribute :repository
+  attribute :repository, key: :id
   has_many :panes
 end

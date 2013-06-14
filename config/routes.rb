@@ -54,7 +54,7 @@ GlazierServer::Application.routes.draw do
 
   get "/api/dashboards", to: 'dashboards#index'
 
-  get "/api/dashboards/:github_user/:github_repo", to: 'dashboards#show'
+  get "/api/dashboards/*id", to: 'dashboards#show', format: false
 
   get "/api/cards/:card_id" => 'cards#show'
   post "/api/cards/:card_id/user" => 'cards#update_user_data'
@@ -66,7 +66,7 @@ GlazierServer::Application.routes.draw do
 
   root :to => 'apps#index'
 
-  get "/:github_user/:github_repo" => 'apps#index'
+  get "/:github_user/*github_repo", to: 'apps#index', format: false
 
   # See how all your routes lay out with "rake routes"
 
