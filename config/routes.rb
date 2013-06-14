@@ -66,7 +66,9 @@ GlazierServer::Application.routes.draw do
 
   root :to => 'apps#index'
 
-  get "/:github_user/*github_repo", to: 'apps#index', format: false
+  get "/:github_user/*github_repo", format: false,
+      github_user: /[a-z0-9-]+/i,
+      to: redirect("/#/%{github_user}/%{github_repo}")
 
   # See how all your routes lay out with "rake routes"
 
