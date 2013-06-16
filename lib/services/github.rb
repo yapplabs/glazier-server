@@ -41,5 +41,16 @@ module Services
         raise "invalid code #{code}"
       end
     end
+
+    def self.is_valid_repository?(repository)
+      http = Net::HTTP.new('api.github.com', 443)
+      http.use_ssl = true
+      params = URI.encode_www_form(
+        "client_id" => Glazier::ApiCredentials::GITHUB_CLIENT_ID,
+        "client_secret" => Glazier::ApiCredentials::GITHUB_CLIENT_SECRET
+      )
+      github_response = http.request_head("/repos/#{repository}?#{params}")
+      github_response.code == "200"
+    end
   end
 end
