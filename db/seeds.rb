@@ -31,7 +31,7 @@ ActiveRecord::Base.transaction do
     manifest.url = 'http://d4h95iioxf8ji.cloudfront.net/cards/github-stars/manifest.json'
     manifest.manifest = ActiveSupport::JSON.encode(
       cardUrl: '/cards/github-stars/card.js',
-      consumes: [ 'repository', 'unauthenticatedGithubApi', 'identity' ]
+      consumes: [ 'repository', 'unauthenticatedGithubApi', 'authenticatedGithubApi', 'identity' ]
     )
   end
 
