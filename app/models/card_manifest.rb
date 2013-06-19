@@ -5,6 +5,20 @@ class CardManifest < ActiveRecord::Base
 
   attr_accessible :manifest, :name, :url
 
+  def consumes!(service_name)
+    hash = MultiJson.load(manifest)
+    hash["consumes"]
+
+    if hash["consumes"].include?(service_name)
+      return puts "#{name} already consumes #{service_name}"
+    end
+
+    hash["consumes"].push(service_name)
+
+    self.manifest = MultiJson.dump(hash)
+    save!
+  end
+
   def self.ingest(url)
     manifest = ManifestIngester.from_url(url)
     name = manifest.fetch('name')
