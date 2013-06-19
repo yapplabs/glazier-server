@@ -1,9 +1,11 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
-gem 'rails-api'
-gem 'pg'
-gem 'active_model_serializers'
+gem 'rails-api', '~> 0.1.0'
+gem 'pg', '~> 0.15.1'
+gem 'active_model_serializers', '~> 0.8.1'
+gem 'faraday', '~> 0.8.7'
+gem 'faraday-http-cache', '~> 0.2.0'
 
 group :development do
   gem 'guard-rspec'

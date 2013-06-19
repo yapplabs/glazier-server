@@ -26,7 +26,7 @@ describe Oauth::GithubController do
       response.body.should == 'def456' #TODO JSON response
     end
 
-    it "should give useful feedback when client id is missing" do
+    focus "should give useful feedback when client id is missing" do
       stub = stub_request(:post, "github.com")
       stub_request(:post, "https://github.com/login/oauth/access_token").
         to_return(:status => 404, :body => "", :headers => {})

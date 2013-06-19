@@ -29,6 +29,8 @@ describe DashboardsController do
     end
 
     it "creates a dashboard if one does not exist" do
+      stub_request(:head, "https://api.github.com/repos/test/does_not_exist?client_id=fffaaabbb&client_secret=fffaaabbb123").
+        to_return(:status => 200, :body => "", :headers => {})
       get :show, :id => 'test/does_not_exist'
       response.should be_success
       response_json = JSON.parse(response.body)

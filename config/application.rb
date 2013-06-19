@@ -10,6 +10,8 @@ if defined?(Bundler)
 end
 
 module GlazierServer
+  VERSION = "0.1.0"
+
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
