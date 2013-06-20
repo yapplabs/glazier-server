@@ -10,7 +10,7 @@ ActiveRecord::Base.transaction do
 
   repositories_manifest = CardManifest.create do |manifest|
     manifest.name = 'yapplabs/github-repositories'
-    manifest.url = 'http://d4h95iioxf8ji.cloudfront.net/cards/github-repositories/manifest.json'
+    manifest.url = 'http://localhost:8000/cards/github-repositories/manifest.json'
     manifest.manifest = ActiveSupport::JSON.encode(
       cardUrl: '/cards/github-repositories/card.js',
       consumes: [ 'authenticatedGithubApi', 'repository', 'identity' ]
@@ -19,7 +19,7 @@ ActiveRecord::Base.transaction do
 
   issues_manifest = CardManifest.create do |manifest|
     manifest.name = 'yapplabs/github-issues'
-    manifest.url = 'http://d4h95iioxf8ji.cloudfront.net/cards/github-issues/manifest.json'
+    manifest.url = 'http://localhost:8000/cards/github-issues/manifest.json'
     manifest.manifest = ActiveSupport::JSON.encode(
       cardUrl: '/cards/github-issues/card.js',
       consumes: [ 'repository', 'authenticatedGithubApi', 'unauthenticatedGithubApi', 'identity' ]
@@ -28,7 +28,7 @@ ActiveRecord::Base.transaction do
 
   stars_manifest = CardManifest.create do |manifest|
     manifest.name = 'yapplabs/github-stars'
-    manifest.url = 'http://d4h95iioxf8ji.cloudfront.net/cards/github-stars/manifest.json'
+    manifest.url = 'http://localhost:8000/cards/github-stars/manifest.json'
     manifest.manifest = ActiveSupport::JSON.encode(
       cardUrl: '/cards/github-stars/card.js',
       consumes: [ 'repository', 'unauthenticatedGithubApi', 'authenticatedGithubApi', 'identity' ]
