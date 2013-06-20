@@ -38,10 +38,8 @@ class CardManifest < ActiveRecord::Base
   end
 
   def self.reingest_all
-    self.all.find_in_batches(batch_size: 25) do |group|
-      group.each do |card_manifest|
-        self.ingest(card_manifest.url)
-      end
+    self.all.each do |card_manifest|
+      self.ingest(card_manifest.url)
     end
   end
 end

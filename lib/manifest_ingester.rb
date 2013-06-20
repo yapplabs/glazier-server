@@ -23,5 +23,7 @@ private
 
   def inflate(buffer)
     Zlib::GzipReader.new(StringIO.new(buffer)).read
+  rescue Zlib::GzipFile::Error
+    buffer
   end
 end
