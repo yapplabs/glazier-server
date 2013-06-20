@@ -40,4 +40,20 @@ namespace :glazier do
 
   desc "ingest and set current"
   task :ingest_as_current, [:file_path] => [:ingest, :set_current]
+
+  namespace :card do
+    task :ingest, [:file_path] => :environment do |t, args|
+      file_path = args[:file_path]
+
+      if file_path.blank?
+        puts "Usage: rake glaizer:card:ingest[path/to/card/manifest.json]"
+        exit
+      end
+
+      manifest = ActiveSupport::JSON.decode(File.read(file_path))
+      name = manifest.fetch('name')
+      url = manifest.fetch('url')
+      CardManifest.create_or_update_by_name(name, url: url, manifest: MultiJson.dump(manifest))
+    end
+  end
 end
