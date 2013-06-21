@@ -46,7 +46,7 @@ namespace :glazier do
       file_path = args[:file_path]
 
       if file_path.blank?
-        puts "Usage: rake glaizer:card:ingest[path/to/card/manifest.json]"
+        puts "Usage: rake glazier:card:ingest[path/to/card/manifest.json]"
         exit
       end
 
