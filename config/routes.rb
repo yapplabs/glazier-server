@@ -48,6 +48,7 @@ GlazierServer::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
+  get '/api/oauth/callback', to: 'oauth/flow#callback'
   get '/api/oauth/github/callback', to: 'oauth/github#callback'
   post '/api/oauth/github/exchange', to: 'oauth/github#exchange'
   get '/api/' => 'apps#index'
