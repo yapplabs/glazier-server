@@ -39,7 +39,11 @@ class CardManifest < ActiveRecord::Base
 
   def self.reingest_all
     self.all.each do |card_manifest|
-      self.ingest(card_manifest.url)
+      begin
+        self.ingest(card_manifest.url)
+      rescue ManifestIngester::IngestionFailedError
+        puts "unable to reingest from #{card_manifest.url}"
+      end
     end
   end
 end
