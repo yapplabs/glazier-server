@@ -3,6 +3,8 @@ require 'manifest_ingester'
 class CardManifest < ActiveRecord::Base
   self.primary_key = :name
 
+  has_many :panes, dependent: :delete_all
+
   attr_accessible :manifest, :name, :url
 
   def consumes!(service_name)
@@ -26,7 +28,7 @@ class CardManifest < ActiveRecord::Base
   end
 
   def self.create_or_update_by_name(name, args = {})
-    card_manifest =  where(name: name).first
+    card_manifest = where(name: name).first
 
     if card_manifest
       card_manifest.update_attributes(args)

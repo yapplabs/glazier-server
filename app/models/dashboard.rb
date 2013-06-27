@@ -3,7 +3,7 @@ require 'services/github'
 class Dashboard < ActiveRecord::Base
   self.primary_key = :repository
 
-  has_and_belongs_to_many :panes, foreign_key: :repository
+  has_many :panes, foreign_key: :repository, dependent: :delete_all
 
   def self.find_or_bootstrap(repository)
     dashboard = find_by_repository(repository)

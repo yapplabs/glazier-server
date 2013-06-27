@@ -88,16 +88,6 @@ CREATE TABLE dashboards (
 
 
 --
--- Name: dashboards_panes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE dashboards_panes (
-    repository character varying(255) NOT NULL,
-    pane_id uuid NOT NULL
-);
-
-
---
 -- Name: page_templates; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -135,6 +125,7 @@ ALTER SEQUENCE page_templates_id_seq OWNED BY page_templates.id;
 
 CREATE TABLE panes (
     id uuid NOT NULL,
+    repository character varying(255),
     card_manifest_name character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -197,14 +188,6 @@ ALTER TABLE ONLY card_manifests
 
 
 --
--- Name: dashboards_panes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY dashboards_panes
-    ADD CONSTRAINT dashboards_panes_pkey PRIMARY KEY (repository, pane_id);
-
-
---
 -- Name: dashboards_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -258,27 +241,19 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
--- Name: dashboards_panes_pane_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY dashboards_panes
-    ADD CONSTRAINT dashboards_panes_pane_id_fkey FOREIGN KEY (pane_id) REFERENCES panes(id);
-
-
---
--- Name: dashboards_panes_repository_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY dashboards_panes
-    ADD CONSTRAINT dashboards_panes_repository_fkey FOREIGN KEY (repository) REFERENCES dashboards(repository);
-
-
---
 -- Name: panes_card_manifest_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY panes
-    ADD CONSTRAINT panes_card_manifest_name_fkey FOREIGN KEY (card_manifest_name) REFERENCES card_manifests(name);
+    ADD CONSTRAINT panes_card_manifest_name_fkey FOREIGN KEY (card_manifest_name) REFERENCES card_manifests(name) ON DELETE CASCADE;
+
+
+--
+-- Name: panes_repository_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY panes
+    ADD CONSTRAINT panes_repository_fkey FOREIGN KEY (repository) REFERENCES dashboards(repository) ON DELETE CASCADE;
 
 
 --
@@ -295,6 +270,6 @@ INSERT INTO schema_migrations (version) VALUES ('20130531194536');
 
 INSERT INTO schema_migrations (version) VALUES ('20130613142629');
 
-INSERT INTO schema_migrations (version) VALUES ('20130613220226');
-
 INSERT INTO schema_migrations (version) VALUES ('20130613220234');
+
+INSERT INTO schema_migrations (version) VALUES ('20130613220300');
