@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe CardManifest do
+describe PaneType do
   describe "creation" do
     it "can be created" do
       lambda {
-        CardManifest.create! do |card_manifest|
-          card_manifest.name = "yapplabs/glazier"
-          card_manifest.url = "http://something.cloudfront.com/card/yapplabs/glazier.json"
-          card_manifest.manifest = "{}"
+        PaneType.create! do |pane_type|
+          pane_type.name = "yapplabs/glazier"
+          pane_type.url = "http://something.cloudfront.com/card/yapplabs/glazier.json"
+          pane_type.manifest = "{}"
         end
-      }.should change(CardManifest, :count).by(1)
+      }.should change(PaneType, :count).by(1)
     end
   end
 end

@@ -1,4 +1,4 @@
 class PaneSerializer < ActiveModel::Serializer
   attribute :id
-  has_one :card_manifest, embed: :ids, include: true, key: :card_manifest_id, root: :card_manifests
+  has_one :pane_type, embed: :ids, include: true, key: :pane_type_id, root: :pane_types
 end

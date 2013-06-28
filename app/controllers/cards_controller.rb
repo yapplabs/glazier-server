@@ -1,15 +1,13 @@
 class CardsController < ApplicationController
-  class InvalidAccessParam < StandardError; end
   class AuthenticationRequired < StandardError; end
 
   before_filter :authenticate_user, except: :show
 
   def update_user_data
-    CardEntry.transaction do
+    PaneUserEntry.transaction do
       params[:data].each do |key, value|
-        CardEntry.add_or_update(
-          access: params[:access],
-          card_id: params[:card_id],
+        PaneUserEntry.add_or_update(
+          pane_id: params[:pane_id],
           github_id: current_user[:github_id],
           key: key,
           value: value
@@ -22,26 +20,19 @@ class CardsController < ApplicationController
     private_data = {}
 
     if current_user.present?
-      CardEntry.where(card_id: params[:card_id], github_id: current_user[:github_id], access: 'private').each do |card_entry|
+      PaneUserEntry.where(pane_id: params[:pane_id], github_id: current_user[:github_id]).each do |card_entry|
         private_data[card_entry.key] = card_entry.value
       end
     end
-
-    # CardEntry.where(card_id: params[:card_id], access: 'public').each do |card_entry|
-    #   public_data...
-    # end
 
     render json: {card: {"private" => private_data}}
   end
 
   def remove_user_data
-    raise InvalidAccessParam unless CardEntry.valid_access_type? params[:access]
-
-    card_entry = CardEntry.where(
-      card_id: params[:card_id],
+    card_entry = PaneUserEntry.where(
+      pane_id: params[:pane_id],
       github_id: current_user[:github_id],
-      key: params[:key],
-      access: params[:access]
+      key: params[:key]
     ).first
     if card_entry
       card_entry.destroy

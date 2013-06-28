@@ -1,17 +1,17 @@
 class CreatePanes < ActiveRecord::Migration
   def up
-    create_table :panes, :id => false do |t|
+    create_table :panes, id: false do |t|
       t.column :id, :uuid
       t.string :repository
-      t.string :card_manifest_name, null: false
+      t.string :pane_type_name, null: false
       t.timestamps
     end
 
     execute <<-SQL
       ALTER TABLE panes ADD PRIMARY KEY (id);
       ALTER TABLE panes
-        ADD CONSTRAINT panes_card_manifest_name_fkey FOREIGN KEY (card_manifest_name)
-            REFERENCES card_manifests (name) ON DELETE CASCADE;
+        ADD CONSTRAINT panes_pane_type_name_fkey FOREIGN KEY (pane_type_name)
+            REFERENCES pane_types (name) ON DELETE CASCADE;
       ALTER TABLE panes
         ADD CONSTRAINT panes_repository_fkey FOREIGN KEY (repository)
             REFERENCES dashboards (repository) ON DELETE CASCADE;

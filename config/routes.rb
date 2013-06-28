@@ -57,9 +57,9 @@ GlazierServer::Application.routes.draw do
 
   get "/api/dashboards/*id", to: 'dashboards#show', format: false
 
-  get "/api/cards/:card_id" => 'cards#show'
-  post "/api/cards/:card_id/user" => 'cards#update_user_data'
-  delete "/api/cards/:card_id/user" => 'cards#remove_user_data'
+  get "/api/cards/:pane_id" => 'cards#show'
+  post "/api/cards/:pane_id/user" => 'cards#update_user_data'
+  delete "/api/cards/:pane_id/user" => 'cards#remove_user_data'
 
   scope '/api' do
     resource :session, only: [:create, :destroy]

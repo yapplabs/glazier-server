@@ -31,7 +31,7 @@ class Dashboard < ActiveRecord::Base
   def self.create_default_panes
     DEFAULT_CARD_NAMES.map do |name|
       Pane.create! do |p|
-        p.card_manifest_name = name
+        p.pane_type_name = name
       end
     end
   end

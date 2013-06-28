@@ -8,28 +8,28 @@
 
 ActiveRecord::Base.transaction do
 
-  repositories_manifest = CardManifest.create do |manifest|
-    manifest.name = 'yapplabs/github-repositories'
-    manifest.url = 'http://localhost:8000/cards/github-repositories/manifest.json'
-    manifest.manifest = ActiveSupport::JSON.encode(
+  repositories_pane_type = PaneType.create do |pane_type|
+    pane_type.name = 'yapplabs/github-repositories'
+    pane_type.url = 'http://localhost:8000/cards/github-repositories/manifest.json'
+    pane_type.manifest = ActiveSupport::JSON.encode(
       cardUrl: '/cards/github-repositories/card.js',
       consumes: [ 'authenticatedGithubApi', 'repository', 'identity' ]
     )
   end
 
-  issues_manifest = CardManifest.create do |manifest|
-    manifest.name = 'yapplabs/github-issues'
-    manifest.url = 'http://localhost:8000/cards/github-issues/manifest.json'
-    manifest.manifest = ActiveSupport::JSON.encode(
+  issues_pane_type = PaneType.create do |pane_type|
+    pane_type.name = 'yapplabs/github-issues'
+    pane_type.url = 'http://localhost:8000/cards/github-issues/manifest.json'
+    pane_type.manifest = ActiveSupport::JSON.encode(
       cardUrl: '/cards/github-issues/card.js',
       consumes: [ 'repository', 'authenticatedGithubApi', 'unauthenticatedGithubApi', 'identity' ]
     )
   end
 
-  stars_manifest = CardManifest.create do |manifest|
-    manifest.name = 'yapplabs/github-stars'
-    manifest.url = 'http://localhost:8000/cards/github-stars/manifest.json'
-    manifest.manifest = ActiveSupport::JSON.encode(
+  stars_pane_type = PaneType.create do |pane_type|
+    pane_type.name = 'yapplabs/github-stars'
+    pane_type.url = 'http://localhost:8000/cards/github-stars/manifest.json'
+    pane_type.manifest = ActiveSupport::JSON.encode(
       cardUrl: '/cards/github-stars/card.js',
       consumes: [ 'repository', 'unauthenticatedGithubApi', 'authenticatedGithubApi', 'identity' ]
     )
@@ -39,17 +39,17 @@ ActiveRecord::Base.transaction do
     dashboard.repository = 'emberjs/ember.js'
     dashboard.panes << Pane.create do |pane|
       pane.id = '1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2'
-      pane.card_manifest = repositories_manifest
+      pane.pane_type = repositories_pane_type
     end
 
     dashboard.panes << Pane.create do |pane|
       pane.id = 'c37b0ba4-cecc-11e2-8fa4-ef3e5db78e4d'
-      pane.card_manifest = issues_manifest
+      pane.pane_type = issues_pane_type
     end
 
     dashboard.panes << Pane.create do |pane|
       pane.id = 'e66028d8-d477-11e2-ac68-97cedea43709'
-      pane.card_manifest = stars_manifest
+      pane.pane_type = stars_pane_type
     end
   end
 
@@ -57,17 +57,17 @@ ActiveRecord::Base.transaction do
     dashboard.repository = 'yapplabs/glazier'
     dashboard.panes << Pane.create do |pane|
       pane.id = 'd30608af-11d8-402f-80a3-1f458650dbef'
-      pane.card_manifest = repositories_manifest
+      pane.pane_type = repositories_pane_type
     end
 
     dashboard.panes << Pane.create do |pane|
       pane.id = 'dca13978-cecc-11e2-b9e3-e342ecfc2ff7'
-      pane.card_manifest = issues_manifest
+      pane.pane_type = issues_pane_type
     end
 
     dashboard.panes << Pane.create do |pane|
       pane.id = 'f1274314-d477-11e2-9e9a-9f78f0c9dfa7'
-      pane.card_manifest = stars_manifest
+      pane.pane_type = stars_pane_type
     end
   end
 

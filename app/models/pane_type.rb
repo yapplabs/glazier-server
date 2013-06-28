@@ -1,6 +1,6 @@
 require 'manifest_ingester'
 
-class CardManifest < ActiveRecord::Base
+class PaneType < ActiveRecord::Base
   self.primary_key = :name
 
   has_many :panes, dependent: :delete_all
@@ -28,23 +28,23 @@ class CardManifest < ActiveRecord::Base
   end
 
   def self.create_or_update_by_name(name, args = {})
-    card_manifest = where(name: name).first
+    pane_type = where(name: name).first
 
-    if card_manifest
-      card_manifest.update_attributes(args)
+    if pane_type
+      pane_type.update_attributes(args)
     else
-      card_manifest = create!(args.merge(name: name))
+      pane_type = create!(args.merge(name: name))
     end
 
-    card_manifest
+    pane_type
   end
 
   def self.reingest_all
-    self.all.each do |card_manifest|
+    self.all.each do |pane_type|
       begin
-        self.ingest(card_manifest.url)
+        self.ingest(pane_type.url)
       rescue ManifestIngester::IngestionFailedError
-        puts "unable to reingest from #{card_manifest.url}"
+        puts "unable to reingest from #{pane_type.url}"
       end
     end
   end

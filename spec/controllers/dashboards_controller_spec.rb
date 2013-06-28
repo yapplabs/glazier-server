@@ -6,14 +6,14 @@ describe DashboardsController do
       d.repository = 'test/test'
     end
     ['glazier/test-card', 'yapplabs/github-issues', 'yapplabs/github-stars'].each do |name|
-      CardManifest.create! do |cm|
-        cm.name = name
-        cm.manifest = '{}'
-        cm.url = "http://glassmaking.tst/#{name}"
+      PaneType.create! do |pane_type|
+        pane_type.name = name
+        pane_type.manifest = '{}'
+        pane_type.url = "http://glassmaking.tst/#{name}"
       end
     end
     pane = Pane.create! do |p|
-      p.card_manifest_name = 'glazier/test-card'
+      p.pane_type_name = 'glazier/test-card'
     end
     dashboard.panes << pane
   end

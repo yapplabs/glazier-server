@@ -29,54 +29,6 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: card_entries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE card_entries (
-    id integer NOT NULL,
-    card_id uuid NOT NULL,
-    access text NOT NULL,
-    github_id bigint,
-    key text,
-    value text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: card_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE card_entries_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: card_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE card_entries_id_seq OWNED BY card_entries.id;
-
-
---
--- Name: card_manifests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE card_manifests (
-    name character varying(255) NOT NULL,
-    url character varying(255) NOT NULL,
-    manifest text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: dashboards; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -92,8 +44,7 @@ CREATE TABLE dashboards (
 --
 
 CREATE TABLE page_templates (
-    id integer NOT NULL,
-    key character varying(255),
+    key text NOT NULL,
     value text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -101,10 +52,24 @@ CREATE TABLE page_templates (
 
 
 --
--- Name: page_templates_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: pane_entries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE SEQUENCE page_templates_id_seq
+CREATE TABLE pane_entries (
+    id integer NOT NULL,
+    pane_id uuid NOT NULL,
+    key text NOT NULL,
+    value text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: pane_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE pane_entries_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -113,10 +78,91 @@ CREATE SEQUENCE page_templates_id_seq
 
 
 --
--- Name: page_templates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: pane_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE page_templates_id_seq OWNED BY page_templates.id;
+ALTER SEQUENCE pane_entries_id_seq OWNED BY pane_entries.id;
+
+
+--
+-- Name: pane_type_user_entries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE pane_type_user_entries (
+    id integer NOT NULL,
+    pane_type_name text NOT NULL,
+    github_id bigint NOT NULL,
+    key text NOT NULL,
+    value text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: pane_type_user_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE pane_type_user_entries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pane_type_user_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE pane_type_user_entries_id_seq OWNED BY pane_type_user_entries.id;
+
+
+--
+-- Name: pane_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE pane_types (
+    name character varying(255) NOT NULL,
+    url character varying(255) NOT NULL,
+    manifest text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: pane_user_entries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE pane_user_entries (
+    id integer NOT NULL,
+    pane_id uuid NOT NULL,
+    github_id bigint NOT NULL,
+    key text NOT NULL,
+    value text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: pane_user_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE pane_user_entries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pane_user_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE pane_user_entries_id_seq OWNED BY pane_user_entries.id;
 
 
 --
@@ -126,7 +172,7 @@ ALTER SEQUENCE page_templates_id_seq OWNED BY page_templates.id;
 CREATE TABLE panes (
     id uuid NOT NULL,
     repository character varying(255),
-    card_manifest_name character varying(255) NOT NULL,
+    pane_type_name character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -161,30 +207,21 @@ CREATE TABLE users (
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY card_entries ALTER COLUMN id SET DEFAULT nextval('card_entries_id_seq'::regclass);
+ALTER TABLE ONLY pane_entries ALTER COLUMN id SET DEFAULT nextval('pane_entries_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY page_templates ALTER COLUMN id SET DEFAULT nextval('page_templates_id_seq'::regclass);
+ALTER TABLE ONLY pane_type_user_entries ALTER COLUMN id SET DEFAULT nextval('pane_type_user_entries_id_seq'::regclass);
 
 
 --
--- Name: card_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY card_entries
-    ADD CONSTRAINT card_entries_pkey PRIMARY KEY (id);
-
-
---
--- Name: card_manifests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY card_manifests
-    ADD CONSTRAINT card_manifests_pkey PRIMARY KEY (name);
+ALTER TABLE ONLY pane_user_entries ALTER COLUMN id SET DEFAULT nextval('pane_user_entries_id_seq'::regclass);
 
 
 --
@@ -200,7 +237,39 @@ ALTER TABLE ONLY dashboards
 --
 
 ALTER TABLE ONLY page_templates
-    ADD CONSTRAINT page_templates_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT page_templates_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: pane_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY pane_entries
+    ADD CONSTRAINT pane_entries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pane_type_user_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY pane_type_user_entries
+    ADD CONSTRAINT pane_type_user_entries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pane_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY pane_types
+    ADD CONSTRAINT pane_types_pkey PRIMARY KEY (name);
+
+
+--
+-- Name: pane_user_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY pane_user_entries
+    ADD CONSTRAINT pane_user_entries_pkey PRIMARY KEY (id);
 
 
 --
@@ -220,17 +289,24 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: index_card_entries_on_card_id_and_access_and_github_id_and_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: pane_entries_pane_id_key_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_card_entries_on_card_id_and_access_and_github_id_and_key ON card_entries USING btree (card_id, access, github_id, key);
+CREATE UNIQUE INDEX pane_entries_pane_id_key_idx ON pane_entries USING btree (pane_id, key);
 
 
 --
--- Name: index_page_templates_on_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: pane_type_user_entries_pane_type_name_github_id_key_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_page_templates_on_key ON page_templates USING btree (key);
+CREATE UNIQUE INDEX pane_type_user_entries_pane_type_name_github_id_key_idx ON pane_type_user_entries USING btree (pane_type_name, github_id, key);
+
+
+--
+-- Name: pane_user_entries_pane_id_github_id_key_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX pane_user_entries_pane_id_github_id_key_idx ON pane_user_entries USING btree (pane_id, github_id, key);
 
 
 --
@@ -241,11 +317,51 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
--- Name: panes_card_manifest_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: pane_entries_pane_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY pane_entries
+    ADD CONSTRAINT pane_entries_pane_id_fkey FOREIGN KEY (pane_id) REFERENCES panes(id) ON DELETE CASCADE;
+
+
+--
+-- Name: pane_type_user_entries_github_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY pane_type_user_entries
+    ADD CONSTRAINT pane_type_user_entries_github_id_fkey FOREIGN KEY (github_id) REFERENCES users(github_id) ON DELETE CASCADE;
+
+
+--
+-- Name: pane_type_user_entries_pane_type_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY pane_type_user_entries
+    ADD CONSTRAINT pane_type_user_entries_pane_type_name_fkey FOREIGN KEY (pane_type_name) REFERENCES pane_types(name) ON DELETE CASCADE;
+
+
+--
+-- Name: pane_user_entries_github_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY pane_user_entries
+    ADD CONSTRAINT pane_user_entries_github_id_fkey FOREIGN KEY (github_id) REFERENCES users(github_id) ON DELETE CASCADE;
+
+
+--
+-- Name: pane_user_entries_pane_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY pane_user_entries
+    ADD CONSTRAINT pane_user_entries_pane_id_fkey FOREIGN KEY (pane_id) REFERENCES panes(id) ON DELETE CASCADE;
+
+
+--
+-- Name: panes_pane_type_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY panes
-    ADD CONSTRAINT panes_card_manifest_name_fkey FOREIGN KEY (card_manifest_name) REFERENCES card_manifests(name) ON DELETE CASCADE;
+    ADD CONSTRAINT panes_pane_type_name_fkey FOREIGN KEY (pane_type_name) REFERENCES pane_types(name) ON DELETE CASCADE;
 
 
 --
@@ -262,10 +378,6 @@ ALTER TABLE ONLY panes
 
 INSERT INTO schema_migrations (version) VALUES ('20130522195433');
 
-INSERT INTO schema_migrations (version) VALUES ('20130523220519');
-
-INSERT INTO schema_migrations (version) VALUES ('20130530213906');
-
 INSERT INTO schema_migrations (version) VALUES ('20130531194536');
 
 INSERT INTO schema_migrations (version) VALUES ('20130613142629');
@@ -273,3 +385,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130613142629');
 INSERT INTO schema_migrations (version) VALUES ('20130613220234');
 
 INSERT INTO schema_migrations (version) VALUES ('20130613220300');
+
+INSERT INTO schema_migrations (version) VALUES ('20130627220253');

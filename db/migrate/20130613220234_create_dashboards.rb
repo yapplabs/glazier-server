@@ -1,6 +1,6 @@
 class CreateDashboards < ActiveRecord::Migration
   def up
-    create_table :dashboards, :id => false do |t|
+    create_table :dashboards, id: false do |t|
       t.string :repository
       t.timestamps
     end

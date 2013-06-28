@@ -53,7 +53,7 @@ namespace :glazier do
       manifest = ActiveSupport::JSON.decode(File.read(file_path))
       name = manifest.fetch('name')
       url = manifest.fetch('url')
-      CardManifest.create_or_update_by_name(name, url: url, manifest: MultiJson.dump(manifest))
+      PaneType.create_or_update_by_name(name, url: url, manifest: MultiJson.dump(manifest))
     end
   end
 end
