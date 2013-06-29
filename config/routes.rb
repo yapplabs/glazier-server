@@ -57,11 +57,20 @@ GlazierServer::Application.routes.draw do
 
   get "/api/dashboards/*id", to: 'dashboards#show', format: false
 
+  get "/api/pane_entries/:pane_id", to: 'pane_entries#index'
+
+  put    "/api/pane_entries/:pane_id", to: 'pane_entries#update'
+  delete "/api/pane_entries/:pane_id", to: 'pane_entries#delete'
+  put    "/api/pane_user_entries/:pane_id", to: 'pane_user_entries#update'
+  delete "/api/pane_user_entries/:pane_id", to: 'pane_entries#delete'
+  put    "/api/pane_type_entries/:pane_type_name", to: 'pane_type_entries#update'
+  delete "/api/pane_type_entries/:pane_type_name", to: 'pane_entries#delete'
+
   get "/api/cards/:pane_id" => 'cards#show'
   post "/api/cards/:pane_id/user" => 'cards#update_user_data'
   delete "/api/cards/:pane_id/user" => 'cards#remove_user_data'
 
-  scope '/api' do
+  scope '/api', defaults: {format: 'json'} do
     resource :session, only: [:create, :destroy]
   end
 
@@ -70,10 +79,4 @@ GlazierServer::Application.routes.draw do
   get "/:github_user/*github_repo", format: false,
       github_user: /[a-z0-9-]+/i,
       to: redirect("/#/%{github_user}/%{github_repo}")
-
-  # See how all your routes lay out with "rake routes"
-
-  # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id))(.:format)'
 end

@@ -19,11 +19,11 @@ describe Authentication do
 
   subject { AuthenticationSpecHost.new }
   let(:user) {
-    User.create(
-      github_login: 'stefanpenner',
-      github_id: 4321,
-      email: 'stefanpenner@gmail.com'
-    )
+    User.create do |user|
+      user.github_login = 'stefanpenner'
+      user.github_id = 4321
+      user.email = 'stefanpenner@gmail.com'
+    end
   }
   describe "#current_user" do
     it "should read current user from the cookie" do
@@ -37,8 +37,8 @@ describe Authentication do
       subject.current_user = user
       serializable_hash = UserSerializer.new(user).serializable_hash
       json_data_from_cookie = ActiveSupport::JSON.decode(subject.cookies[:login].split('-', 2).last, symbolize_keys: true)
-      json_data_from_cookie.should == serializable_hash
-      subject.current_user.should == user
+      json_data_from_cookie.should eq(serializable_hash)
+      subject.current_user.should eq(user)
     end
   end
 end

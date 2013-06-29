@@ -1,15 +1,48 @@
 require 'spec_helper'
 
 describe SessionsController do
+  let!(:default_panes) do
+    Dashboard::DEFAULT_PANE_TYPE_NAMES.each do |pane_type_name|
+      PaneType.create do |pane_type|
+        pane_type.name = pane_type_name
+        pane_type.url = ''
+        pane_type.manifest = '{}'
+      end
+    end
+  end
+
+
+
   describe '#create' do
     it 'creates a user record for a github user who has not logged in before using the github access token' do
-      Services::Github.stub(:get_user_data) do
+      user_json = <<-JS
         {
-          'id' => 1234,
-          'login' => 'stefanpenner',
-          'email' => 'stefanpenner@gmail.com'
+          "id": 1234,
+          "login": "stefanpenner",
+          "email": "stefanpenner@gmail.com"
         }
-      end
+      JS
+
+      stub_request(:get, "https://api.github.com/user").
+        with(headers: {'Authorization'=>'token abcd'}).
+        to_return(status: 200, body: user_json)
+
+      user_repos_json = <<-JS
+        [
+          {
+            "full_name":"emberjs/ember.js",
+            "permissions":{"admin":false,"push":true,"pull":true}
+          },
+          {
+            "full_name":"wycats/rake-pipeline-web-filters",
+            "permissions":{"admin":false,"push":false,"pull":true}
+          }
+        ]
+      JS
+
+      stub_request(:get, "https://api.github.com/user/repos").
+        with(headers: {'Authorization'=>'token abcd'}).
+        to_return(status: 200, body: user_repos_json)
 
       lambda {
         post :create, github_access_token: 'abcd'
@@ -19,7 +52,7 @@ describe SessionsController do
       new_user = User.last
 
       json = JSON.parse(response.body)
-      json.should == {
+      json.should eq(
         'user' => {
           'email' => 'stefanpenner@gmail.com',
           'github_access_token' => 'abcd',
@@ -28,13 +61,13 @@ describe SessionsController do
           'gravatar_id' => nil,
           'name' => nil
         }
-      }
+      )
 
       serializable_hash = UserSerializer.new(new_user).serializable_hash
       signed_user_json = cookies[:login]
       digest, user_json = signed_user_json.split('-', 2)
 
-      ActiveSupport::JSON.decode(user_json, symbolize_keys: true).should == serializable_hash
+      ActiveSupport::JSON.decode(user_json, symbolize_keys: true).should eq(serializable_hash)
 
       controller.instance_eval do
         current_user.should == new_user
@@ -42,35 +75,26 @@ describe SessionsController do
     end
 
     it 'handles invalid access tokens' do
-      Services::Github.stub(:get_user_data) do
-        raise "Bad credentials"
-      end
+      stub_request(:get, "https://api.github.com/user").
+        with(:headers => {'Authorization'=>'token fakefake'}).
+        to_return(:status => 401, :body => '{"message":"Bad credentials"}')
 
-      lambda {
-        post :create, github_access_token: 'fakefake'
-      }.should raise_error
+      post :create, github_access_token: 'fakefake', format: 'json'
+
+      response.status.should eq(400)
     end
 
     it 'tells you if there is a missing access token' do
-      lambda {
-        post :create
-      }.should raise_error
+      post :create
     end
   end
 
   describe '#destroy' do
     before do
-      user = User.create(
-        github_login: 'stefanpenner',
-        github_id: 4321,
-        email: 'stefanpenner@gmail.com'
-      )
-      Services::Github.stub(:get_user_data) do
-        {
-          'id' => 1234,
-          'login' => 'stefanpenner',
-          'email' => 'stefanpenner@gmail.com'
-        }
+      User.create do |user|
+        user.github_login = 'stefanpenner'
+        user.github_id = 4321
+        user.email = 'stefanpenner@gmail.com'
       end
       post :create, github_access_token: 'abcd'
     end

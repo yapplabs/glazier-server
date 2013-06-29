@@ -5,34 +5,30 @@ class Dashboard < ActiveRecord::Base
 
   has_many :panes, foreign_key: :repository, dependent: :delete_all
 
-  def self.find_or_bootstrap(repository)
-    dashboard = find_by_repository(repository)
-    return dashboard if dashboard.present?
-
-    raise ActiveRecord::RecordNotFound unless Services::Github.is_valid_repository?(repository)
-
-    transaction do
-      dashboard = create! do |d|
-        d.repository = repository
-        create_default_panes.each do |pane|
-          d.panes << pane
-        end
-      end
-    end
-    dashboard
-  rescue ActiveRecord::RecordNotUnique
-    find_by_repository(repository)
-  end
-
-  DEFAULT_CARD_NAMES = [
+  DEFAULT_PANE_TYPE_NAMES = [
     'yapplabs/github-issues',
     'yapplabs/github-stars'
   ]
-  def self.create_default_panes
-    DEFAULT_CARD_NAMES.map do |name|
-      Pane.create! do |p|
-        p.pane_type_name = name
+
+  def self.find_or_bootstrap(repository)
+    dashboard = where(repository: repository).first
+
+    return dashboard if dashboard.present?
+
+    bootstrap(repository)
+  end
+
+  def self.bootstrap(repository)
+    transaction(requires_new: true) do
+      create! do |dashboard|
+        dashboard.repository = repository
+        DEFAULT_PANE_TYPE_NAMES.map do |pane_type_name|
+          pane = dashboard.panes.new
+          pane.pane_type_name = pane_type_name
+        end
       end
     end
+  rescue ActiveRecord::RecordNotUnique
+    find(repository)
   end
 end
