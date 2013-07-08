@@ -42,7 +42,7 @@ module Authentication
   # Verify signed_user_json and return user hash using secret
   def self.verified_cookie_value(signed_user_json, secret)
     return nil unless signed_user_json
-    digest, user_json = signed_user_json.split("-")
+    digest, user_json = signed_user_json.split("-",2)
     return unless secure_compare(digest, generate_digest(secret, user_json))
     user_hash = ActiveSupport::JSON.decode(user_json, symbolize_keys: true) rescue nil
     return unless user_hash

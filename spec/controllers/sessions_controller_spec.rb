@@ -1,17 +1,11 @@
 require 'spec_helper'
 
 describe SessionsController do
-  let!(:default_panes) do
-    Dashboard::DEFAULT_PANE_TYPE_NAMES.each do |pane_type_name|
-      PaneType.create do |pane_type|
-        pane_type.name = pane_type_name
-        pane_type.url = ''
-        pane_type.manifest = '{}'
-      end
-    end
+  let!(:default_pane_types) do
+    Dashboard::DEFAULT_PANE_TYPE_NAMES.each {|pane_type_name|
+      create(:pane_type, name: pane_type_name)
+    }
   end
-
-
 
   describe '#create' do
     it 'creates a user record for a github user who has not logged in before using the github access token' do
@@ -91,12 +85,7 @@ describe SessionsController do
 
   describe '#destroy' do
     before do
-      User.create do |user|
-        user.github_login = 'stefanpenner'
-        user.github_id = 4321
-        user.email = 'stefanpenner@gmail.com'
-      end
-      post :create, github_access_token: 'abcd'
+      request.cookies['login'] = 'some opaque login cookie'
     end
 
     it "clears out the session's user_id" do

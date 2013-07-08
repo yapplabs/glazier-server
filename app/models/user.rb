@@ -1,6 +1,10 @@
 class User < ActiveRecord::Base
   self.primary_key = :github_id
 
+  has_many :user_dashboards, foreign_key: :github_id, dependent: :delete_all
+  has_many :dashboards, through: :user_dashboards
+  has_many :editable_dashboards, through: :user_dashboards, source: :dashboard, conditions: { 'user_dashboards.is_collaborator' => true }
+
   def self.find_or_create(github_access_token, github_user_data)
     github_id = github_user_data.fetch('id')
 

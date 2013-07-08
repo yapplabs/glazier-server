@@ -1,31 +1,17 @@
 require 'spec_helper'
 
 describe DashboardsController do
-  before do
-    dashboard = Dashboard.create! do |d|
-      d.repository = 'test/test'
-    end
-    ['glazier/test-card', 'yapplabs/github-issues', 'yapplabs/github-stars'].each do |name|
-      PaneType.create! do |pane_type|
-        pane_type.name = name
-        pane_type.manifest = '{}'
-        pane_type.url = "http://glassmaking.tst/#{name}"
-      end
-    end
-    pane = Pane.create! do |p|
-      p.pane_type_name = 'glazier/test-card'
-    end
-    dashboard.panes << pane
-  end
+  let!(:dashboard) { create(:dashboard_with_default_panes) }
+
   describe '#show' do
     it "return an existing dashboard" do
-      get :show, :id => 'test/test'
+      get :show, :id => dashboard.id
 
       response.should be_success
       response_json = JSON.parse(response.body)
       response_json.should have_key('dashboard')
       response_json.should have_key('panes')
-      response_json['panes'].size.should == 1
+      response_json['panes'].size.should == dashboard.panes.size
     end
 
     it "creates a dashboard if one does not exist" do

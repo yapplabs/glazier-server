@@ -188,6 +188,19 @@ CREATE TABLE schema_migrations (
 
 
 --
+-- Name: user_dashboards; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE user_dashboards (
+    github_id bigint NOT NULL,
+    repository character varying(255) NOT NULL,
+    is_collaborator boolean DEFAULT false NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -278,6 +291,14 @@ ALTER TABLE ONLY pane_user_entries
 
 ALTER TABLE ONLY panes
     ADD CONSTRAINT panes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_dashboards_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY user_dashboards
+    ADD CONSTRAINT user_dashboards_pkey PRIMARY KEY (github_id, repository);
 
 
 --
@@ -387,3 +408,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130613220234');
 INSERT INTO schema_migrations (version) VALUES ('20130613220300');
 
 INSERT INTO schema_migrations (version) VALUES ('20130627220253');
+
+INSERT INTO schema_migrations (version) VALUES ('20130708182155');

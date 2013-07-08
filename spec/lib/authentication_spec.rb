@@ -5,26 +5,24 @@ describe Authentication do
   class AuthenticationSpecHost < ActionController::API
     include ActionController::Cookies
     include Authentication
+
     public :current_user, :current_user=
+
     def secret_token
       'abc123'
     end
 
-    attr_accessor :cookies, :session
+    attr_accessor :cookies
+
     def initialize
       self.cookies = ActionDispatch::Cookies::CookieJar.new
     end
   end
 
-
   subject { AuthenticationSpecHost.new }
-  let(:user) {
-    User.create do |user|
-      user.github_login = 'stefanpenner'
-      user.github_id = 4321
-      user.email = 'stefanpenner@gmail.com'
-    end
-  }
+
+  let(:user) { create(:user) }
+
   describe "#current_user" do
     it "should read current user from the cookie" do
       subject.cookies[:login] = Authentication.generate_cookie_value(user, subject.secret_token)

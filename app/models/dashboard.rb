@@ -5,6 +5,9 @@ class Dashboard < ActiveRecord::Base
 
   has_many :panes, foreign_key: :repository, dependent: :delete_all
 
+  has_many :user_dashboards, foreign_key: :repository, dependent: :delete_all
+  has_many :users, through: :user_dashboards
+
   DEFAULT_PANE_TYPE_NAMES = [
     'yapplabs/github-issues',
     'yapplabs/github-stars'
