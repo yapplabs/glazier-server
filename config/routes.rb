@@ -64,12 +64,10 @@ GlazierServer::Application.routes.draw do
     delete "/pane_entries/:pane_id", to: 'pane_entries#destroy'
     put    "/pane_user_entries/:pane_id", to: 'pane_user_entries#update'
     delete "/pane_user_entries/:pane_id", to: 'pane_user_entries#destroy'
-    put    "/pane_type_entries/:pane_type_name", to: 'pane_type_entries#update'
-    delete "/pane_type_entries/:pane_type_name", to: 'pane_type_entries#destroy'
+    put    "/pane_type_user_entries/:pane_type_name", to: 'pane_type_user_entries#update'
+    delete "/pane_type_user_entries/:pane_type_name", to: 'pane_type_user_entries#destroy'
 
     get "/cards/:pane_id" => 'cards#show'
-    post "/cards/:pane_id/user" => 'cards#update_user_data'
-    delete "/cards/:pane_id/user" => 'cards#remove_user_data'
   end
 
   root :to => 'apps#index'
