@@ -52,26 +52,24 @@ GlazierServer::Application.routes.draw do
   get '/api/oauth/github/callback', to: 'oauth/github#callback'
   post '/api/oauth/github/exchange', to: 'oauth/github#exchange'
   get '/api/' => 'apps#index'
-
   get "/api/dashboards", to: 'dashboards#index'
-
   get "/api/dashboards/*id", to: 'dashboards#show', format: false
 
-  get "/api/pane_entries/:pane_id", to: 'pane_entries#index'
-
-  put    "/api/pane_entries/:pane_id", to: 'pane_entries#update'
-  delete "/api/pane_entries/:pane_id", to: 'pane_entries#delete'
-  put    "/api/pane_user_entries/:pane_id", to: 'pane_user_entries#update'
-  delete "/api/pane_user_entries/:pane_id", to: 'pane_entries#delete'
-  put    "/api/pane_type_entries/:pane_type_name", to: 'pane_type_entries#update'
-  delete "/api/pane_type_entries/:pane_type_name", to: 'pane_entries#delete'
-
-  get "/api/cards/:pane_id" => 'cards#show'
-  post "/api/cards/:pane_id/user" => 'cards#update_user_data'
-  delete "/api/cards/:pane_id/user" => 'cards#remove_user_data'
-
-  scope '/api', defaults: {format: 'json'} do
+  namespace '/api', module: nil, defaults: {format: 'json'} do
     resource :session, only: [:create, :destroy]
+
+    get "/pane_entries/:pane_id", to: 'pane_entries#index'
+
+    put    "/pane_entries/:pane_id", to: 'pane_entries#update'
+    delete "/pane_entries/:pane_id", to: 'pane_entries#destroy'
+    put    "/pane_user_entries/:pane_id", to: 'pane_user_entries#update'
+    delete "/pane_user_entries/:pane_id", to: 'pane_user_entries#destroy'
+    put    "/pane_type_entries/:pane_type_name", to: 'pane_type_entries#update'
+    delete "/pane_type_entries/:pane_type_name", to: 'pane_type_entries#destroy'
+
+    get "/cards/:pane_id" => 'cards#show'
+    post "/cards/:pane_id/user" => 'cards#update_user_data'
+    delete "/cards/:pane_id/user" => 'cards#remove_user_data'
   end
 
   root :to => 'apps#index'

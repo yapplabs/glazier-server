@@ -31,23 +31,6 @@ describe CardsController do
         json['card']['private'].should == {}
       end
     end
-
-    describe '#update_user_data' do
-      it "raises an error when there is no user" do
-        lambda {
-          post :update_user_data, data: {mykey: 'value'}, pane_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
-        }.should raise_error
-      end
-    end
-
-    describe '#remove_user_data' do
-      it "raises an error when there is no user" do
-        lambda {
-          delete :remove_user_data, key: 'value', pane_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
-        }.should raise_error
-      end
-    end
-
   end
 
   describe "When a user is logged in" do
@@ -66,56 +49,6 @@ describe CardsController do
 
         json = JSON.parse(response.body)
         json['card']['private']['mykey'].should == "my value"
-      end
-    end
-
-    describe '#update_user_data' do
-      it "adds a single private user key/value pair" do
-        lambda {
-          post :update_user_data, data: {mykey: 'value'}, pane_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
-          response.should be_success
-        }.should change(PaneUserEntry, :count).by 1
-
-        card_entry = PaneUserEntry.last
-        card_entry.key.should == 'mykey'
-      end
-
-      it "adds multiple private user key/value pairs" do
-        lambda {
-          post :update_user_data, data: {mykey: 'value', anotherkey: 'anotherval'}, pane_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
-          response.should be_success
-        }.should change(PaneUserEntry, :count).by 2
-      end
-
-      it "updates values for keys that already exist" do
-        post :update_user_data, data: {mykey: 'value'}, pane_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
-        response.should be_success
-
-        lambda {
-          post :update_user_data, data: {mykey: 'newvalue'}, pane_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
-          response.should be_success
-        }.should_not change(PaneUserEntry, :count)
-
-        card_entry = PaneUserEntry.last
-        card_entry.value.should == 'newvalue'
-      end
-    end
-
-    describe '#remove_user_data' do
-      it "removes a PaneUserEntry if one matches" do
-        PaneUserEntry.create(key: 'was-added', pane_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9') {|u| u.github_id = 123 }
-
-        lambda {
-          delete :remove_user_data, key: 'was-added', pane_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
-          response.should be_success
-        }.should change(PaneUserEntry, :count).by(-1)
-      end
-
-      it "completes silently if no PaneUserEntry matches" do
-        lambda {
-          delete :remove_user_data, key: 'never-added', pane_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
-          response.should be_success
-        }.should_not change(PaneUserEntry, :count)
       end
     end
   end
