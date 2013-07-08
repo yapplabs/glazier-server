@@ -15,17 +15,15 @@ describe CardsController do
 
     describe '#update_user_data' do
       it "raises an error when there is no user" do
-        lambda {
-          post :update_user_data, data: {mykey: 'value'}, access: 'private', card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
-        }.should raise_error
+        post :update_user_data, data: {mykey: 'value'}, access: 'private', card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
+        response.code.should == "401"
       end
     end
 
     describe '#remove_user_data' do
       it "raises an error when there is no user" do
-        lambda {
-          delete :remove_user_data, key: 'value', access: 'private', card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
-        }.should raise_error
+        delete :remove_user_data, key: 'value', access: 'private', card_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
+        response.code.should == "401"
       end
     end
 
