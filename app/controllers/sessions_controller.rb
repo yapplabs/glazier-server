@@ -38,11 +38,19 @@ class SessionsController < ApplicationController
     user_repos_data.each do |repo_data|
       repository = repo_data['full_name']
 
-      Dashboard.find_or_bootstrap(repository)
+      dashboard = Dashboard.find_or_bootstrap(repository)
 
-      if repo_data['permission']
+      is_collaborator = repo_data['permission'] && repo_data['permission']['push']
 
-      end
+      # TODO need to delete UserDashboard where not in user_repos_data
+      # update is_collaborator UserDashboard if exists
+      # create UserDashboard if not exists
+
+      # UserDashboard.create do |user_dashboard|
+      #   user_dashboard.user = user
+      #   user_dashboard.dashboard = dashboard
+      #   user_dashboard.is_collaborator = is_collaborator
+      # end
     end
   end
 

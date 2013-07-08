@@ -394,6 +394,22 @@ ALTER TABLE ONLY panes
 
 
 --
+-- Name: user_dashboards_github_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY user_dashboards
+    ADD CONSTRAINT user_dashboards_github_id_fkey FOREIGN KEY (github_id) REFERENCES users(github_id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_dashboards_repository_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY user_dashboards
+    ADD CONSTRAINT user_dashboards_repository_fkey FOREIGN KEY (repository) REFERENCES dashboards(repository) ON DELETE CASCADE;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
