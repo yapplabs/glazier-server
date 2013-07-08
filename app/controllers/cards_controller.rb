@@ -1,6 +1,5 @@
 class CardsController < ApplicationController
   class InvalidAccessParam < StandardError; end
-  class AuthenticationRequired < StandardError; end
 
   before_filter :authenticate_user, except: :show
 
@@ -53,7 +52,7 @@ class CardsController < ApplicationController
 
   def authenticate_user
     unless current_user.present?
-      raise AuthenticationRequired
+      head :unauthorized
     end
   end
 end
