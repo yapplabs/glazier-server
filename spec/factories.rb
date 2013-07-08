@@ -26,6 +26,16 @@ FactoryGirl.define do
     pane_type
   end
 
+  factory :pane_entry
+
+  factory :pane_user_entry do
+    user
+  end
+
+  factory :pane_type_user_entry do
+    user
+  end
+
   factory :dashboard do
     repository { generate(:repository) }
 
@@ -35,6 +45,17 @@ FactoryGirl.define do
           pane_type = create(:pane_type, name: pane_type_name)
           create(:pane, pane_type: pane_type, repository: dashboard)
         end
+      end
+    end
+
+    factory :dashboard_with_data do
+      after(:create) do |dashboard|
+        pane_type = create(:pane_type)
+        user = create(:user)
+        pane = create(:pane, pane_type: pane_type, repository: dashboard)
+        create(:pane_entry, key: 'foo', value: 'bar', pane: pane)
+        create(:pane_user_entry, key: 'foo_user', value: 'bar_user', pane: pane, user: user)
+        create(:pane_type_user_entry, key: 'foo_type_user', value: 'bar_type_user', pane_type: pane_type, user: user)
       end
     end
   end

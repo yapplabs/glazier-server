@@ -24,5 +24,20 @@ describe DashboardsController do
       response_json.should have_key('panes')
       response_json['panes'].size.should > 1
     end
+    context "with data" do
+      let!(:dashboard) { create(:dashboard_with_data) }
+      it "includes pane_entries, pane_type_user_entries, and pane_user_entries" do
+        get :show, :id => dashboard.id
+
+        response.should be_success
+        response_json = JSON.parse(response.body)
+        response_json.should have_key('pane_entries')
+        response_json.should have_key('pane_user_entries')
+        response_json.should have_key('pane_type_user_entries')
+        response_json['pane_entries']['foo'].should == 'bar'
+        response_json['pane_user_entries']['foo_user'].should == 'bar_user'
+        response_json['pane_type_user_entries']['foo_type_user'].should == 'bar_type_user'
+      end
+    end
   end
 end
