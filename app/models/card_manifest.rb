@@ -3,7 +3,7 @@ require 'manifest_ingester'
 class CardManifest < ActiveRecord::Base
   self.primary_key = :name
 
-  has_many :panes, dependent: :delete_all
+  has_many :panes, dependent: :delete_all, :foreign_key => :card_manifest_name
 
   attr_accessible :manifest, :name, :url
 
