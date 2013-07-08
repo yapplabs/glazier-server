@@ -8,31 +8,30 @@ describe SessionsController do
   end
 
   describe '#create' do
-    it 'creates a user record for a github user who has not logged in before using the github access token' do
-      user_json = <<-JS
+    let(:user_json) do
+      <<-JS
         {
           "id": 1234,
           "login": "stefanpenner",
           "email": "stefanpenner@gmail.com"
         }
       JS
-
-      stub_request(:get, "https://api.github.com/user").
-        with(headers: {'Authorization'=>'token abcd'}).
-        to_return(status: 200, body: user_json)
-
-      user_repos_json = <<-JS
+    end
+    let(:user_repos_json) do
+      <<-JS
         [
           {
             "full_name":"emberjs/ember.js",
             "permissions":{"admin":false,"push":true,"pull":true}
-          },
-          {
-            "full_name":"wycats/rake-pipeline-web-filters",
-            "permissions":{"admin":false,"push":false,"pull":true}
           }
         ]
       JS
+    end
+    it 'creates a user record for a github user who has not logged in before using the github access token' do
+      stub_request(:get, "https://api.github.com/user").
+        with(headers: {'Authorization'=>'token abcd'}).
+        to_return(status: 200, body: user_json)
+
 
       stub_request(:get, "https://api.github.com/user/repos").
         with(headers: {'Authorization'=>'token abcd'}).
@@ -65,6 +64,56 @@ describe SessionsController do
 
       controller.instance_eval do
         current_user.should == new_user
+      end
+    end
+
+    it 'creates a dashboard if the user has push rights to one that is not yet in the Glazier system' do
+      stub_request(:get, "https://api.github.com/user").
+        with(headers: {'Authorization'=>'token abcd'}).
+        to_return(status: 200, body: user_json)
+
+      stub_request(:get, "https://api.github.com/user/repos").
+        with(headers: {'Authorization'=>'token abcd'}).
+        to_return(status: 200, body: user_repos_json)
+
+      post :create, github_access_token: 'abcd'
+      response.should be_success
+
+      controller.instance_eval do
+        dashboards = current_user.user_dashboards(true)
+        dashboards.size.should == 1
+        dashboards.first.repository.should == 'emberjs/ember.js'
+      end
+    end
+
+    it 'removes a dashboard if the user no longer has push rights to one previously added to the Glazier database' do
+      stub_request(:get, "https://api.github.com/user").
+        with(headers: {'Authorization'=>'token abcd'}).
+        to_return(status: 200, body: user_json)
+
+      stub_request(:get, "https://api.github.com/user/repos").
+        with(headers: {'Authorization'=>'token abcd'}).
+        to_return(status: 200, body: user_repos_json)
+
+      post :create, github_access_token: 'abcd'
+      response.should be_success
+
+      controller.instance_eval do
+        dashboards = current_user.user_dashboards(true)
+        dashboards.size.should == 1
+        dashboards.first.repository.should == 'emberjs/ember.js'
+      end
+
+      stub_request(:get, "https://api.github.com/user/repos").
+        with(headers: {'Authorization'=>'token abcd'}).
+        to_return(status: 200, body: '[]')
+
+      post :create, github_access_token: 'abcd'
+      response.should be_success
+
+      controller.instance_eval do
+        dashboards = current_user.user_dashboards(true)
+        dashboards.size.should == 0
       end
     end
 

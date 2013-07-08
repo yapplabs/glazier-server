@@ -3,7 +3,6 @@ class CreateUserDashboards < ActiveRecord::Migration
     create_table :user_dashboards, id: false do |t|
       t.integer :github_id, limit: 8
       t.string :repository
-      t.boolean :is_collaborator, null: false, default: false
       t.timestamps
     end
 
