@@ -1,5 +1,4 @@
 require 'services/github'
-require 'user_dashboard_syncer'
 
 class SessionsController < ApplicationController
   def create
