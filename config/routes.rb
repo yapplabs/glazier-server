@@ -58,12 +58,12 @@ GlazierServer::Application.routes.draw do
   namespace '/api', module: nil, defaults: {format: 'json'} do
     resource :session, only: [:create, :destroy]
 
-    get "/pane_entries/:pane_id", to: 'pane_entries#index'
-
     put    "/pane_entries/:pane_id", to: 'pane_entries#update'
     delete "/pane_entries/:pane_id", to: 'pane_entries#destroy'
+
     put    "/pane_user_entries/:pane_id", to: 'pane_user_entries#update'
     delete "/pane_user_entries/:pane_id", to: 'pane_user_entries#destroy'
+
     put    "/pane_type_user_entries/:pane_type_name", to: 'pane_type_user_entries#update'
     delete "/pane_type_user_entries/:pane_type_name", to: 'pane_type_user_entries#destroy'
 

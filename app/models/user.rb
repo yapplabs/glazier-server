@@ -22,4 +22,21 @@ class User < ActiveRecord::Base
       user.gravatar_id = github_user_data['gravatar_id']
     end
   end
+
+  def sync_dashboards(repositories)
+    current_repositories = user_dashboards.pluck(:repository)
+
+    repositories_to_delete = current_repositories - repositories
+
+    repositories_to_create = repositories - current_repositories
+
+    user_dashboards.where(UserDashboard.arel_table[:repository].in(repositories_to_delete)).destroy_all
+
+    repositories_to_create.each do |repository|
+      dashboard = Dashboard.find_or_bootstrap(repository)
+      user_dashboards.create! do |user_dashboard|
+        user_dashboard.dashboard = dashboard
+      end
+    end
+  end
 end

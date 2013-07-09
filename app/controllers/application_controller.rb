@@ -29,4 +29,8 @@ class ApplicationController < ActionController::API
       }, status: 500
     end
   end
+
+  def authenticate_user
+    head :unauthorized unless current_user.present?
+  end
 end

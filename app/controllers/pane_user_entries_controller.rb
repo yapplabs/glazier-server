@@ -1,5 +1,5 @@
 class PaneUserEntriesController < ApplicationController
-  before_filter :authenticate_user, except: :show
+  before_filter :authenticate_user
 
   def update
     PaneUserEntry.transaction do
@@ -24,13 +24,5 @@ class PaneUserEntriesController < ApplicationController
       card_entry.destroy
     end
     render json: {}
-  end
-
-private
-
-  def authenticate_user
-    unless current_user.present?
-      head :unauthorized
-    end
   end
 end

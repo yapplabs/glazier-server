@@ -30,8 +30,15 @@ module Services
         get '/user', access_token
       end
 
-      def get_user_repos(access_token)
-        get '/user/repos', access_token
+      def get_public_repos_with_push_permission(access_token)
+        repos = get('/user/repos', access_token, type: 'public')
+        orgs = get('/user/orgs', access_token)
+        orgs.each do |org|
+          login = org.fetch('login')
+          org_repos = get("/orgs/#{login}/repos", access_token, type: 'public')
+          repos.concat(org_repos)
+        end
+        repos.select {|repo| repo['permissions'] && repo['permissions']['push'] }.map {|repo| repo['full_name']}
       end
 
       def get(url, access_token, params=nil)

@@ -17,14 +17,6 @@ class SessionsController < ApplicationController
     self.current_user = user
 
     render json: user, status: :created
-  rescue => e
-    case e
-    when Services::Github::InvalidCredentials
-      render_invalid_github_access_token_json
-    else
-      log_fatal(e)
-      render_internal_error_json(e)
-    end
   end
 
   def destroy
@@ -34,12 +26,21 @@ class SessionsController < ApplicationController
 
   private
 
+  def rescue_with_handler(e)
+    case e
+    when Services::Github::InvalidCredentials
+      render_invalid_github_access_token_json
+    else
+      log_fatal(e)
+      render_internal_error_json(e)
+    end
+  end
+
   # Updates local dashboard info based on current Github edit rights
+  # TODO: should be a background job
   def sync_repos(user)
-    user_repos_data = Services::Github.get_user_repos(user.github_access_token)
-    syncer = UserDashboardSyncer.new(user, user_repos_data)
-    syncer.create_missing_dashboards
-    syncer.remove_outdated_dashboards
+    repos = Services::Github.get_public_repos_with_push_permission(user.github_access_token)
+    user.sync_dashboards(repos)
   end
 
   def render_invalid_github_access_token_json

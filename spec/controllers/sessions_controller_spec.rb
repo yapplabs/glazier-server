@@ -33,9 +33,13 @@ describe SessionsController do
         to_return(status: 200, body: user_json)
 
 
-      stub_request(:get, "https://api.github.com/user/repos").
+      stub_request(:get, "https://api.github.com/user/repos?type=public").
         with(headers: {'Authorization'=>'token abcd'}).
         to_return(status: 200, body: user_repos_json)
+
+      stub_request(:get, "https://api.github.com/user/orgs").
+        with(headers: {'Authorization'=>'token abcd'}).
+        to_return(status: 200, body: '[]')
 
       lambda {
         post :create, github_access_token: 'abcd'
@@ -72,9 +76,13 @@ describe SessionsController do
         with(headers: {'Authorization'=>'token abcd'}).
         to_return(status: 200, body: user_json)
 
-      stub_request(:get, "https://api.github.com/user/repos").
+      stub_request(:get, "https://api.github.com/user/repos?type=public").
         with(headers: {'Authorization'=>'token abcd'}).
         to_return(status: 200, body: user_repos_json)
+
+      stub_request(:get, "https://api.github.com/user/orgs").
+        with(headers: {'Authorization'=>'token abcd'}).
+        to_return(status: 200, body: '[]')
 
       post :create, github_access_token: 'abcd'
       response.should be_success
@@ -91,9 +99,13 @@ describe SessionsController do
         with(headers: {'Authorization'=>'token abcd'}).
         to_return(status: 200, body: user_json)
 
-      stub_request(:get, "https://api.github.com/user/repos").
+      stub_request(:get, "https://api.github.com/user/repos?type=public").
         with(headers: {'Authorization'=>'token abcd'}).
         to_return(status: 200, body: user_repos_json)
+
+      stub_request(:get, "https://api.github.com/user/orgs").
+        with(headers: {'Authorization'=>'token abcd'}).
+        to_return(status: 200, body: '[]')
 
       post :create, github_access_token: 'abcd'
       response.should be_success
@@ -104,7 +116,7 @@ describe SessionsController do
         dashboards.first.repository.should == 'emberjs/ember.js'
       end
 
-      stub_request(:get, "https://api.github.com/user/repos").
+      stub_request(:get, "https://api.github.com/user/repos?type=public").
         with(headers: {'Authorization'=>'token abcd'}).
         to_return(status: 200, body: '[]')
 
