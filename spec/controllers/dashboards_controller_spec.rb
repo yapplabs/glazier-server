@@ -27,16 +27,21 @@ describe DashboardsController do
     context "with data" do
       let!(:dashboard) { create(:dashboard_with_data) }
       it "includes pane_entries, pane_type_user_entries, and pane_user_entries" do
+        controller.stub current_user: User.find(123)
+
         get :show, :id => dashboard.id
 
         response.should be_success
         response_json = JSON.parse(response.body)
-        response_json.should have_key('pane_entries')
-        response_json.should have_key('pane_user_entries')
-        response_json.should have_key('pane_type_user_entries')
-        response_json['pane_entries']['foo'].should == 'bar'
-        response_json['pane_user_entries']['foo_user'].should == 'bar_user'
-        response_json['pane_type_user_entries']['foo_type_user'].should == 'bar_type_user'
+
+        pane_json = response_json['panes'].first
+
+        pane_json.should have_key('pane_entries')
+        pane_json.should have_key('pane_user_entries')
+        pane_json.should have_key('pane_type_user_entries')
+        pane_json['pane_entries']['foo'].should eq('bar')
+        pane_json['pane_user_entries']['foo_user'].should eq('bar_user')
+        pane_json['pane_type_user_entries']['foo_type_user'].should eq('bar_type_user')
       end
     end
   end
