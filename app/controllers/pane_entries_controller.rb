@@ -3,11 +3,8 @@ class PaneEntriesController < ApplicationController
 
   def update
     pane = Pane.find(params[:pane_id])
-    dashboard = current_user.dashboards.where(
-      repository: pane.dashboard.repository
-    ).first
 
-    head :unauthorized unless dashboard
+    head :unauthorized unless current_user.has_dashboard?(pane.repository)
 
     # PaneTypeUserEntry.transaction do
     #   params[:data].each do |key, value|

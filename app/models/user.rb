@@ -23,6 +23,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def has_dashboard?(repository)
+    user_dashboards.where(repository: repository).exists?
+  end
+
   def sync_dashboards(repositories)
     current_repositories = user_dashboards.pluck(:repository)
 
