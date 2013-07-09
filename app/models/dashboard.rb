@@ -36,20 +36,18 @@ class Dashboard < ActiveRecord::Base
   end
 
   def add_pane(name)
-    pane = Pane.create! do |p|
-      p.card_manifest_name = name
+    panes.create! do |pane|
+      pane.pane_type_name = name
     end
-    self.panes.push(pane)
   end
 
   def pane_names
-    panes.map do |p|
-      p.card_manifest_name
+    panes.map do |pane|
+      pane.pane_type_name
     end
   end
 
   def remove_pane(name)
-    panes_to_remove = self.panes.where(card_manifest_name: name)
-    self.panes.delete(panes_to_remove)
+    panes.where(pane_type_name: name).destroy_all
   end
 end
