@@ -1,6 +1,4 @@
 class PaneTypeUserEntriesController < ApplicationController
-  class AuthenticationRequired < StandardError; end
-
   before_filter :authenticate_user, except: :show
 
   def update
@@ -32,7 +30,7 @@ private
 
   def authenticate_user
     unless current_user.present?
-      raise AuthenticationRequired
+      head :unauthorized
     end
   end
 end

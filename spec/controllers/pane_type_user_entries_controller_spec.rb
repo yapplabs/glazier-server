@@ -24,17 +24,15 @@ describe PaneTypeUserEntriesController do
   describe "when user is not logged in" do
     describe '#update' do
       it "raises an error when there is no user" do
-        lambda {
-          put :update, data: {mykey: 'value'}, pane_type_name: 'foo'
-        }.should raise_error
+        put :update, data: {mykey: 'value'}, pane_type_name: 'foo'
+        response.code.should == "401"
       end
     end
 
     describe '#destroy' do
       it "raises an error when there is no user" do
-        lambda {
-          delete :destroy, key: 'value', pane_type_name: 'foo'
-        }.should raise_error
+        delete :destroy, key: 'value', pane_type_name: 'foo'
+        response.code.should == "401"
       end
     end
 

@@ -24,17 +24,15 @@ describe PaneUserEntriesController do
   describe "when user is not logged in" do
     describe '#update' do
       it "raises an error when there is no user" do
-        lambda {
-          put :update, data: {mykey: 'value'}, pane_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
-        }.should raise_error
+        put :update, data: {mykey: 'value'}, pane_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
+        response.code.should == "401"
       end
     end
 
     describe '#destroy' do
       it "raises an error when there is no user" do
-        lambda {
-          delete :destroy, key: 'value', pane_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
-        }.should raise_error
+        delete :destroy, key: 'value', pane_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
+        response.code.should == "401"
       end
     end
 

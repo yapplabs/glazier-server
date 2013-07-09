@@ -3,7 +3,7 @@ require 'manifest_ingester'
 class PaneType < ActiveRecord::Base
   self.primary_key = :name
 
-  has_many :panes, dependent: :delete_all
+  has_many :panes, dependent: :delete_all, foreign_key: :pane_type_name
   # pane_type_user_entries.where(:github_id => current_user.github_id)
   has_many :pane_type_user_entries, foreign_key: :pane_type_name, dependent: :delete_all
 
