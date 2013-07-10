@@ -17,6 +17,9 @@ module Authentication
     signed_user_json = cookies[:login]
 
     @current_user = Authentication.verified_cookie_value(signed_user_json, secret_token)
+  rescue
+    cookies.delete(:login)
+    @current_user = nil
   end
 
   # Sets the current_user
