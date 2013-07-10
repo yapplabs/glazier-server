@@ -6,15 +6,7 @@ class PaneEntriesController < ApplicationController
 
     head :unauthorized unless current_user.has_dashboard?(pane.repository)
 
-    PaneEntry.transaction do
-      params[:data].each do |key, value|
-        PaneEntry.add_or_update(
-          pane_id: pane.id,
-          key: key,
-          value: value
-        )
-      end
-    end
+    pane.set_entries(params[:data])
 
     head :no_content
   end
@@ -24,8 +16,7 @@ class PaneEntriesController < ApplicationController
 
     head :unauthorized unless current_user.has_dashboard?(pane.repository)
 
-    entry = PaneEntry.where(pane_id: pane.id, key: params[:key]).first
-    entry.destroy if entry
+    pane.remove_entry(params[:key])
 
     head :no_content
   end

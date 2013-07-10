@@ -40,9 +40,7 @@ describe PaneTypeUserEntriesController do
 
   describe "When a user is logged in" do
     before do
-      controller.stub(:current_user) do
-        {github_id: 123}
-      end
+      controller.stub(current_user: user)
     end
 
     describe '#update' do
@@ -79,7 +77,11 @@ describe PaneTypeUserEntriesController do
 
     describe '#destroy' do
       it "removes a PaneTypeUserEntry if one matches" do
-        PaneTypeUserEntry.create(key: 'was-added', pane_type_name: 'foo') {|u| u.github_id = 123 }
+        PaneTypeUserEntry.create do |entry|
+          entry.github_id = 123
+          entry.key = 'was-added'
+          entry.pane_type_name = 'foo'
+        end
 
         lambda {
           delete :destroy, key: 'was-added', pane_type_name: 'foo'

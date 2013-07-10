@@ -50,4 +50,28 @@ class PaneType < ActiveRecord::Base
       end
     end
   end
+
+  def set_user_entries(github_id, data)
+    transaction do
+      data.each do |key, value|
+        set_user_entry(github_id, key, value)
+      end
+    end
+  end
+
+  def set_user_entry(github_id, key, value)
+    entry = pane_type_user_entries.where(github_id: github_id, key: key).first
+    unless entry
+      entry = pane_type_user_entries.new
+      entry.github_id = github_id
+      entry.key = key
+    end
+    entry.value = value
+    entry.save
+  end
+
+  def remove_user_entry(github_id, key)
+    entry = pane_type_user_entries.where(github_id: github_id, key: key).first
+    entry.destroy if entry
+  end
 end

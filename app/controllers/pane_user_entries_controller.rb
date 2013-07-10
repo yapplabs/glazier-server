@@ -2,27 +2,18 @@ class PaneUserEntriesController < ApplicationController
   before_filter :authenticate_user
 
   def update
-    PaneUserEntry.transaction do
-      params[:data].each do |key, value|
-        PaneUserEntry.add_or_update(
-          pane_id: params[:pane_id],
-          github_id: current_user[:github_id],
-          key: key,
-          value: value
-        )
-      end
-    end
+    pane = Pane.find(params[:pane_id])
+
+    pane.set_user_entries(current_user.github_id, params[:data])
+
+    head :no_content
   end
 
   def destroy
-    card_entry = PaneUserEntry.where(
-      pane_id: params[:pane_id],
-      github_id: current_user[:github_id],
-      key: params[:key]
-    ).first
-    if card_entry
-      card_entry.destroy
-    end
-    render json: {}
+    pane = Pane.find(params[:pane_id])
+
+    pane.remove_user_entry(current_user.github_id, params[:key])
+
+    head :no_content
   end
 end
