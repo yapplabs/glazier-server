@@ -34,4 +34,5 @@ GlazierServer::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+  config.secret_token = '72a06a024697f8cc361a24ccea5cc57610068e12389a986495af999d2002334dfb414b7dcd21e2967f59af0f093f56dd29f370e4beca93525661aa142ae43296'
 end
