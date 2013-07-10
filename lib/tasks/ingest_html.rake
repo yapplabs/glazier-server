@@ -6,7 +6,7 @@ namespace :glazier do
     file_path = args[:file_path]
 
     if file_path.blank?
-      puts "Usage: rake glaizer:ingest[path/to/html/file]"
+      puts "Usage: rake glazier:ingest[path/to/html/file]"
       exit
     end
 
