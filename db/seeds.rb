@@ -10,18 +10,18 @@ ActiveRecord::Base.transaction do
 
   repositories_pane_type = PaneType.create do |pane_type|
     pane_type.name = 'yapplabs/github-repositories'
-    pane_type.url = 'http://localhost:8000/cards/github-repositories/manifest.json'
+    pane_type.url = 'http://localhost:8000/cards/glazier-github-repositories/manifest.json'
     pane_type.manifest = ActiveSupport::JSON.encode(
-      cardUrl: '/cards/github-repositories/card.js',
+      cardUrl: '/cards/glazier-github-repositories/card.js',
       consumes: [ 'authenticatedGithubApi', 'repository', 'identity' ]
     )
   end
 
   issues_pane_type = PaneType.create do |pane_type|
     pane_type.name = 'yapplabs/github-issues'
-    pane_type.url = 'http://localhost:8000/cards/github-issues/manifest.json'
+    pane_type.url = 'http://localhost:8000/cards/glazier-github-issues/manifest.json'
     pane_type.manifest = ActiveSupport::JSON.encode(
-      cardUrl: '/cards/github-issues/card.js',
+      cardUrl: '/cards/glazier-github-issues/card.js',
       consumes: [ 'repository', 'authenticatedGithubApi', 'unauthenticatedGithubApi', 'identity' ]
     )
   end
@@ -30,7 +30,7 @@ ActiveRecord::Base.transaction do
     pane_type.name = 'yapplabs/github-stars'
     pane_type.url = 'http://localhost:8000/cards/github-stars/manifest.json'
     pane_type.manifest = ActiveSupport::JSON.encode(
-      cardUrl: '/cards/github-stars/card.js',
+      cardUrl: '/cards/glazier-github-stars/card.js',
       consumes: [ 'repository', 'unauthenticatedGithubApi', 'authenticatedGithubApi', 'identity' ]
     )
   end
