@@ -9,8 +9,8 @@ class Dashboard < ActiveRecord::Base
   has_many :users, through: :user_dashboards
 
   DEFAULT_PANE_TYPE_NAMES = [
-    'yapplabs/github-issues',
-    'yapplabs/github-stars'
+    'glazier-github-issues',
+    'glazier-github-stars'
   ]
 
   def self.find_or_bootstrap(repository)
