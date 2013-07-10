@@ -194,7 +194,6 @@ CREATE TABLE schema_migrations (
 CREATE TABLE user_dashboards (
     github_id bigint NOT NULL,
     repository character varying(255) NOT NULL,
-    is_collaborator boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
