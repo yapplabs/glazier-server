@@ -1,5 +1,6 @@
 FactoryGirl.define do
   sequence(:repository) {|n| "owner/repo#{n}.js" }
+  sequence(:pane_type_name) {|n| "pane_type_#{n}" }
   sequence(:uuid) { SecureRandom.uuid }
 
   factory :user do
@@ -12,7 +13,7 @@ FactoryGirl.define do
   end
 
   factory :pane_type do
-    name 'yapplabs/pane-type'
+    name { generate(:pane_type_name) }
     url {
       "http://glazier.s3.amazonaws.com/#{name}/manifest.json"
     }
