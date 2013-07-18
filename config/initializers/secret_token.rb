@@ -10,10 +10,10 @@
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
 
-# Although this is not needed for an api-only application, rails4 
-# requires secret_key_base or secret_toke to be defined, otherwise an 
+# Although this is not needed for an api-only application, rails4
+# requires secret_key_base or secret_toke to be defined, otherwise an
 # error is raised.
 # Using secret_token for rails3 compatibility. Change to secret_key_base
 # to avoid deprecation warning.
 # Can be safely removed in a rails3 api-only application.
-GlazierServer::Application.config.secret_token = '72a06a024697f8cc361a24ccea5cc57610068e12389a986495af999d2002334dfb414b7dcd21e2967f59af0f093f56dd29f370e4beca93525661aa142ae43296'
+GlazierServer::Application.config.secret_token = ENV['GLAZIER_SECRET_TOKEN'] || '72a06a024697f8cc361a24ccea5cc57610068e12389a986495af999d2002334dfb414b7dcd21e2967f59af0f093f56dd29f370e4beca93525661aa142ae43296'
