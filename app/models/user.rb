@@ -23,6 +23,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def editable_repositories
+    ['emberjs/ember.js'] # TODO get the real list
+  end
+
   def has_dashboard?(repository)
     user_dashboards.where(repository: repository).exists?
   end

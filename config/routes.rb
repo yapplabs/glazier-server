@@ -67,6 +67,7 @@ GlazierServer::Application.routes.draw do
     put    "/pane_type_user_entries/:pane_type_name", to: 'pane_type_user_entries#update'
     delete "/pane_type_user_entries/:pane_type_name", to: 'pane_type_user_entries#destroy'
 
+    get "/users/:id", to: "users#show"
     get "/panes", to: "panes#index"
   end
 

@@ -34,9 +34,8 @@ module Authentication
     request.env["action_dispatch.secret_token"]
   end
 
-  # Generate signed_user_json from user_serializable_hash using secret
   def self.generate_cookie_value(user, secret)
-    user_serializable_hash = UserSerializer.new(user).serializable_hash
+    user_serializable_hash = {id: user.github_id} # full json is too big to store
     user_json = ::ActiveSupport::JSON.encode(user_serializable_hash)
     digest = generate_digest(secret, user_json)
     "#{digest}-#{user_json}"
