@@ -33,9 +33,8 @@ describe Authentication do
   describe "#current_user=" do
     it "should assign the current user" do
       subject.current_user = user
-      serializable_hash = UserSerializer.new(user).serializable_hash
       json_data_from_cookie = ActiveSupport::JSON.decode(subject.cookies[:login].split('-', 2).last, symbolize_keys: true)
-      json_data_from_cookie.should eq(serializable_hash)
+      json_data_from_cookie.should eq(github_id: 123)
       subject.current_user.should eq(user)
     end
   end

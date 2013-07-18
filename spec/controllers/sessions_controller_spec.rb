@@ -56,15 +56,15 @@ describe SessionsController do
           'github_id' => 1234,
           'github_login' => 'stefanpenner',
           'gravatar_id' => nil,
-          'name' => nil
+          'name' => nil,
+          'editable_repositories' => ["emberjs/ember.js"]
         }
       )
 
-      serializable_hash = UserSerializer.new(new_user).serializable_hash
       signed_user_json = cookies[:login]
       digest, user_json = signed_user_json.split('-', 2)
 
-      ActiveSupport::JSON.decode(user_json, symbolize_keys: true).should eq(serializable_hash)
+      ActiveSupport::JSON.decode(user_json).should eq("github_id" => 1234)
 
       controller.instance_eval do
         current_user.should == new_user
