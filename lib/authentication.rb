@@ -35,7 +35,7 @@ module Authentication
   end
 
   def self.generate_cookie_value(user, secret)
-    user_serializable_hash = {id: user.github_id} # full json is too big to store
+    user_serializable_hash = {github_id: user.github_id} # full json is too big to store
     user_json = ::ActiveSupport::JSON.encode(user_serializable_hash)
     digest = generate_digest(secret, user_json)
     "#{digest}-#{user_json}"

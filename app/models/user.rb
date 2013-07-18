@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   end
 
   def editable_repositories
-    ['emberjs/ember.js'] # TODO get the real list
+    dashboards.pluck(:repository)
   end
 
   def has_dashboard?(repository)
