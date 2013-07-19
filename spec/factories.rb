@@ -54,9 +54,9 @@ FactoryGirl.define do
         pane_type = create(:pane_type)
         user = create(:user)
         pane = create(:pane, pane_type: pane_type, repository: dashboard)
-        create(:pane_entry, key: 'foo', value: 'bar', pane: pane)
-        create(:pane_user_entry, key: 'foo_user', value: 'bar_user', pane: pane, user: user)
-        create(:pane_type_user_entry, key: 'foo_type_user', value: 'bar_type_user', pane_type: pane_type, user: user)
+        create(:pane_entry, key: 'foo', value: ActiveSupport::JSON.encode('bar'), pane: pane)
+        create(:pane_user_entry, key: 'foo_user', value: ActiveSupport::JSON.encode('bar_user'), pane: pane, user: user)
+        create(:pane_type_user_entry, key: 'foo_type_user', value: ActiveSupport::JSON.encode('bar_type_user'), pane_type: pane_type, user: user)
       end
     end
   end
