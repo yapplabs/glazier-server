@@ -20,6 +20,9 @@ class PaneSerializer < ActiveModel::Serializer
 
   private
   def entries_to_hash(entries)
-    entries.inject({}) {|hash, entry| hash[entry.key] = entry.value; hash }
+    entries.inject({})  do |hash, entry|
+      hash[entry.key] = ActiveSupport::JSON.decode(entry.value)
+      hash
+    end
   end
 end
