@@ -1,5 +1,7 @@
 class PaneSerializer < ActiveModel::Serializer
   attributes :id, :pane_entries, :pane_user_entries, :pane_type_user_entries
+  attribute :repository, key: :dashboard_id
+
   has_one :pane_type, embed: :ids, include: true, key: :pane_type_id, root: :pane_types
 
   def pane_entries
