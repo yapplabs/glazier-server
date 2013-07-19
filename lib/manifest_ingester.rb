@@ -13,7 +13,12 @@ module ManifestIngester
     response = http.request_get(uri.path)
 
     unless (200...300).include? response.code.to_i
-      raise IngestionFailedError, response
+      raise IngestionFailedError, {
+        host: uri.host,
+        port: uri.port,
+        path: uri.path,
+        response: response
+      }.inspect
     end
 
     JSON.parse(inflate(response.body))
