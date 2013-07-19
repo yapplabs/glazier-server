@@ -31,7 +31,7 @@ namespace :glazier do
   task :set_current, [:fingerprint] => :environment do |t, args|
     fingerprint = args[:fingerprint] || ENV['GLAZIER_INGEST_FINGERPRINT']
     key = "index:#{fingerprint}"
-    target = PageTemplate.find_by_key(key)
+    target = PageTemplate.find_by_key!(key)
     current = PageTemplate.find_or_create_by_key("index:current")
     current.value = target.value
     current.save!
