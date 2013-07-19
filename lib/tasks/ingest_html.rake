@@ -22,7 +22,7 @@ namespace :glazier do
     end
 
     puts "To set this as the current index, in the glazier-server project, use:"
-    puts "  bundle exec rake 'glazier:set_current[#{fingerprint}]'"
+    puts "  heroku surrogate rake 'glazier:set_current[#{fingerprint}]'"
 
     ENV['GLAZIER_INGEST_FINGERPRINT'] = fingerprint
   end
