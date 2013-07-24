@@ -35,8 +35,9 @@ class Dashboard < ActiveRecord::Base
     find(repository)
   end
 
-  def add_pane(name)
+  def add_pane(name, id = null)
     panes.create! do |pane|
+      pane.id = id if id
       pane.pane_type_name = name
     end
   end

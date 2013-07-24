@@ -58,7 +58,7 @@ GlazierServer::Application.routes.draw do
   namespace '/api', module: nil, defaults: {format: 'json'} do
     resource :session, only: [:create, :destroy]
     resource :user, only: [:show]
-    resources :panes, only: [:index]
+    resources :panes, only: [:index, :create]
     resources :pane_types, only: [:index]
 
     put    "/pane_entries/:pane_id", to: 'pane_entries#update'
