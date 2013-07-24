@@ -1,5 +1,5 @@
 class PanesController < ApplicationController
-  before_filter :authenticate_user, only: [:create]
+  before_filter :authenticate_user, only: [:create, :destroy]
 
   def index
     if params[:ids].blank?
@@ -24,5 +24,16 @@ class PanesController < ApplicationController
     pane = dashboard.add_pane(pane_type_id, pane_id)
 
     render json: pane
+  end
+
+  def destroy
+    pane_id = params[:id]
+    pane = Pane.find(pane_id)
+
+    head :forbidden unless current_user.has_dashboard?(pane.repository)
+
+    pane.destroy()
+
+    head :no_content
   end
 end
