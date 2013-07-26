@@ -42,19 +42,33 @@ module Services
       end
 
       def get(url, access_token, params=nil)
+        retry_count = 5
+
         raise InvalidCredentials if access_token.blank?
 
-        res = faraday_client.get do |req|
-          req.url url
-          req.headers['Authorization'] = "token #{access_token}"
-          req.params.merge!(params) if params
-        end
+        begin
+          res = faraday_client.get do |req|
+            req.url url
+            req.headers['Authorization'] = "token #{access_token}"
+            req.params.merge!(params) if params
+          end
 
-        if res.status == 401
-          raise InvalidCredentials, "Invalid credentials"
-        end
+          if res.status == 401
+            raise InvalidCredentials, "Invalid credentials"
+          end
 
-        ActiveSupport::JSON.decode(res.body)
+          ActiveSupport::JSON.decode(res.body)
+
+          # handle intermittent blank JSON responses
+        rescue MultiJson::LoadError
+          retry_count -= 1
+          if retry_count >= 0
+            Rails.logger.debug("MultiJson::LoadError from #{url}, retrying")
+            retry
+          else
+            Rails.logger.debug("MultiJson::LoadError from #{url}, giving up...")
+          end
+        end
       end
 
       def is_valid_repository?(repository)
