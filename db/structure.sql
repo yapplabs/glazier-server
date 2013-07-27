@@ -174,7 +174,8 @@ CREATE TABLE panes (
     repository character varying(255),
     pane_type_name character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    "position" integer DEFAULT 0
 );
 
 
@@ -425,3 +426,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130613220300');
 INSERT INTO schema_migrations (version) VALUES ('20130627220253');
 
 INSERT INTO schema_migrations (version) VALUES ('20130708182155');
+
+INSERT INTO schema_migrations (version) VALUES ('20130727213043');
