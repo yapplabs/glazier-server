@@ -13,6 +13,7 @@ class PanesController < ApplicationController
 
   def create
     pane_id = params[:pane][:id]
+    position = params[:pane][:position]
     dashboard_id = params[:pane][:dashboard_id]
     pane_type_id = params[:pane][:pane_type_id]
 
@@ -21,7 +22,7 @@ class PanesController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       return head :forbidden
     end
-    pane = dashboard.add_pane(pane_type_id, pane_id)
+    pane = dashboard.add_pane(pane_type_id, pane_id, position)
 
     render json: pane
   end

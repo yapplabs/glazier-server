@@ -35,11 +35,16 @@ class Dashboard < ActiveRecord::Base
     find(repository)
   end
 
-  def add_pane(name, id = nil)
+  def add_pane(name, id = nil, position = nil)
     panes.create! do |pane|
       pane.id = id if id
       pane.pane_type_name = name
+      pane.position = position || next_pane_position
     end
+  end
+
+  def next_pane_position
+    panes.max { |a,b| a.position || 0 <=> b.position || 0 }
   end
 
   def pane_names
