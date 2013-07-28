@@ -27,7 +27,7 @@ describe DashboardsController do
     context "with data" do
       let!(:dashboard) { create(:dashboard_with_data) }
       it "includes pane_entries, pane_type_user_entries, and pane_user_entries" do
-        controller.stub current_user: User.find(123)
+        controller.stub current_user: User.last
 
         get :show, :id => dashboard.id
 

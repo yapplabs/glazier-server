@@ -34,7 +34,7 @@ describe Authentication do
     it "should assign the current user" do
       subject.current_user = user
       json_data_from_cookie = ActiveSupport::JSON.decode(subject.cookies[:login].split('-', 2).last, symbolize_keys: true)
-      json_data_from_cookie.should eq(github_id: 123)
+      json_data_from_cookie.should eq(github_id: user.github_id)
       subject.current_user.should eq(user)
     end
   end

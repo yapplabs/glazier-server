@@ -2,9 +2,10 @@ FactoryGirl.define do
   sequence(:repository) {|n| "owner/repo#{n}.js" }
   sequence(:pane_type_name) {|n| "pane_type_#{n}" }
   sequence(:uuid) { SecureRandom.uuid }
+  sequence(:github_id)
 
   factory :user do
-    github_id 123
+    github_id { generate(:github_id) }
     github_access_token 'opaque-access-token'
     github_login 'jsnow'
     name 'Jon Snow'
@@ -33,7 +34,12 @@ FactoryGirl.define do
     user
   end
 
+
   factory :pane_type_user_entry do
+    user
+  end
+
+  factory :user_dashboard do
     user
   end
 
@@ -45,6 +51,7 @@ FactoryGirl.define do
         Dashboard::DEFAULT_PANE_TYPE_NAMES.each do |pane_type_name|
           pane_type = create(:pane_type, name: pane_type_name)
           create(:pane, pane_type: pane_type, repository: dashboard)
+          create(:user_dashboard, dashboard: dashboard)
         end
       end
     end

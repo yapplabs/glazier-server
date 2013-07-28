@@ -36,4 +36,21 @@ class PanesController < ApplicationController
 
     head :no_content
   end
+
+  def reorder
+    pane_ids = params[:pane_ids]
+    begin
+      dashboard = current_user.dashboards.find(params[:dashboard_id])
+    rescue ActiveRecord::RecordNotFound
+      return head :forbidden
+    end
+    dashboard.panes.each do |pane|
+      new_position = pane_ids.index(pane.id)
+      if new_position
+        pane.position = new_position
+        pane.save! if pane.changed?
+      end
+    end
+    head :no_content
+  end
 end
