@@ -11,7 +11,11 @@ class User < ActiveRecord::Base
 
     user = User.where(github_id: github_id).first
 
-    return user if user
+    if user
+      user.github_access_token = github_access_token
+      user.save!
+      return user
+    end
 
     User.create! do |user|
       user.github_id = github_id
