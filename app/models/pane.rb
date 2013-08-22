@@ -1,5 +1,5 @@
 class Pane < ActiveRecord::Base
-  belongs_to :dashboard, foreign_key: :repository
+  belongs_to :dashboard
   belongs_to :pane_type, foreign_key: :pane_type_name
 
   has_many :pane_entries, dependent: :delete_all
@@ -11,6 +11,10 @@ class Pane < ActiveRecord::Base
   has_many :pane_type_user_entries, through: :pane_type
 
   before_create :ensure_id
+
+  def repository
+    read_attribute(:repository).presence || dashboard_id
+  end
 
   def ensure_id
     self.id = SecureRandom.uuid if id.blank?

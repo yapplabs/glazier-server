@@ -175,7 +175,8 @@ CREATE TABLE panes (
     pane_type_name character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    "position" integer DEFAULT 0
+    "position" integer DEFAULT 0,
+    dashboard_id character varying(255)
 );
 
 
@@ -378,19 +379,19 @@ ALTER TABLE ONLY pane_user_entries
 
 
 --
+-- Name: panes_dashboard_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY panes
+    ADD CONSTRAINT panes_dashboard_id_fkey FOREIGN KEY (dashboard_id) REFERENCES dashboards(repository) ON DELETE CASCADE;
+
+
+--
 -- Name: panes_pane_type_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY panes
     ADD CONSTRAINT panes_pane_type_name_fkey FOREIGN KEY (pane_type_name) REFERENCES pane_types(name) ON DELETE CASCADE;
-
-
---
--- Name: panes_repository_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY panes
-    ADD CONSTRAINT panes_repository_fkey FOREIGN KEY (repository) REFERENCES dashboards(repository) ON DELETE CASCADE;
 
 
 --
@@ -428,3 +429,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130627220253');
 INSERT INTO schema_migrations (version) VALUES ('20130708182155');
 
 INSERT INTO schema_migrations (version) VALUES ('20130727213043');
+
+INSERT INTO schema_migrations (version) VALUES ('20130822202916');
