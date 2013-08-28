@@ -6,6 +6,7 @@ gem 'pg', '~> 0.15.1'
 gem 'active_model_serializers', '~> 0.8.1'
 gem 'faraday', '~> 0.8.7'
 gem 'faraday-http-cache', '~> 0.2.0'
+gem 'rack-canonical-host'
 
 group :development do
   gem 'guard-rspec'
