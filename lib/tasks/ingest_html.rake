@@ -43,17 +43,19 @@ namespace :glazier do
 
   namespace :card do
     task :ingest, [:file_path] => :environment do |t, args|
-      file_path = args[:file_path]
+      file_paths = args[:file_path].split('|')
 
-      if file_path.blank?
+      if file_paths.empty?
         puts "Usage: rake glazier:card:ingest[path/to/card/manifest.json]"
         exit
       end
 
-      manifest = ActiveSupport::JSON.decode(File.read(file_path))
-      name = manifest.fetch('name')
-      url = manifest.fetch('url')
-      PaneType.create_or_update_by_name(name, url: url, manifest: MultiJson.dump(manifest))
+      file_paths.each do |file_path|
+        manifest = ActiveSupport::JSON.decode(File.read(file_path))
+        name = manifest.fetch('name')
+        url = manifest.fetch('url')
+        PaneType.create_or_update_by_name(name, url: url, manifest: MultiJson.dump(manifest))
+      end
     end
   end
 end
