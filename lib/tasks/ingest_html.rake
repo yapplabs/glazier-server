@@ -42,13 +42,15 @@ namespace :glazier do
   task :ingest_as_current, [:file_path] => [:ingest, :set_current]
 
   namespace :card do
-    task :ingest, [:file_path] => :environment do |t, args|
-      file_paths = args[:file_path].split('|')
+    task :ingest, [:file_paths] => :environment do |t, args|
+      file_paths = args[:file_paths]
 
-      if file_paths.empty?
+      if file_paths.blank?
         puts "Usage: rake glazier:card:ingest[path/to/card/manifest.json]"
         exit
       end
+
+      file_paths = file_paths.split('|')
 
       file_paths.each do |file_path|
         manifest = ActiveSupport::JSON.decode(File.read(file_path))
