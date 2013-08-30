@@ -73,6 +73,13 @@ describe PaneTypeUserEntriesController do
         card_entry = PaneTypeUserEntry.last
         card_entry.value.should == 'newvalue'
       end
+
+      it "returns error when no data provided" do
+        lambda {
+          put :update, pane_type_name: 'foo'
+          response.code.should == "400"
+        }.should_not change(PaneTypeUserEntry, :count)
+      end
     end
 
     describe '#destroy' do

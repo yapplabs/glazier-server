@@ -24,8 +24,10 @@ describe PaneUserEntriesController do
   describe "when user is not logged in" do
     describe '#update' do
       it "raises an error when there is no user" do
-        put :update, data: {mykey: 'value'}, pane_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
-        response.code.should == "401"
+        lambda {
+          put :update, data: {mykey: 'value'}, pane_id: '28c94114-d49b-11e2-ac01-9fc6e17420e9'
+          response.code.should == "401"
+        }.should_not change(PaneUserEntry, :count)
       end
     end
 
@@ -72,6 +74,12 @@ describe PaneUserEntriesController do
 
         card_entry = PaneUserEntry.last
         card_entry.value.should == 'newvalue'
+      end
+      it "returns error when no data provided" do
+        lambda {
+          put :update, pane_id: dashboard.panes.first.id
+          response.code.should == "400"
+        }.should_not change(PaneUserEntry, :count)
       end
     end
 

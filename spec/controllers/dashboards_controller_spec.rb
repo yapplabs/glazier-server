@@ -35,7 +35,6 @@ describe DashboardsController do
         response_json = JSON.parse(response.body)
 
         pane_json = response_json['panes'].first
-
         pane_json.should have_key('pane_entries')
         pane_json.should have_key('pane_user_entries')
         pane_json.should have_key('pane_type_user_entries')

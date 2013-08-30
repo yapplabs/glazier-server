@@ -50,7 +50,7 @@ FactoryGirl.define do
       after(:create) do |dashboard|
         Dashboard::DEFAULT_PANE_TYPE_NAMES.each do |pane_type_name|
           pane_type = create(:pane_type, name: pane_type_name)
-          create(:pane, pane_type: pane_type, dashboard: dashboard)
+          create(:pane, pane_type: pane_type, repository: dashboard.repository, dashboard: dashboard)
           create(:user_dashboard, dashboard: dashboard)
         end
       end
@@ -60,7 +60,7 @@ FactoryGirl.define do
       after(:create) do |dashboard|
         pane_type = create(:pane_type)
         user = create(:user)
-        pane = create(:pane, pane_type: pane_type, dashboard: dashboard)
+        pane = create(:pane, pane_type: pane_type, repository: dashboard.repository, dashboard: dashboard)
         create(:pane_entry, key: 'foo', value: ActiveSupport::JSON.encode('bar'), pane: pane)
         create(:pane_user_entry, key: 'foo_user', value: ActiveSupport::JSON.encode('bar_user'), pane: pane, user: user)
         create(:pane_type_user_entry, key: 'foo_type_user', value: ActiveSupport::JSON.encode('bar_type_user'), pane_type: pane_type, user: user)
