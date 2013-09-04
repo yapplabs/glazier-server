@@ -1,5 +1,5 @@
 class Pane < ActiveRecord::Base
-  belongs_to :dashboard
+  belongs_to :section
   belongs_to :pane_type, foreign_key: :pane_type_name
 
   has_many :pane_entries, dependent: :delete_all
@@ -13,7 +13,7 @@ class Pane < ActiveRecord::Base
   before_create :ensure_id
 
   def repository
-    read_attribute(:repository).presence || dashboard_id
+    read_attribute(:repository).presence || section.try(:dashboard_id)
   end
 
   def ensure_id

@@ -4,12 +4,14 @@ describe PaneUserEntriesController do
   let!(:dashboard) do
     Dashboard.create do |dashboard|
       dashboard.repository = 'foo/bar'
-      dashboard.panes.new do |pane|
-        pane.id = '28c94114-d49b-11e2-ac01-9fc6e17420e9'
-        pane.create_pane_type do |pane_type|
-          pane_type.name = 'foo'
-          pane_type.manifest = '{}'
-          pane_type.url = 'http://foo.com/manifest.json'
+      dashboard.sections.new do |section|
+        section.panes.new do |pane|
+          pane.id = '28c94114-d49b-11e2-ac01-9fc6e17420e9'
+          pane.create_pane_type do |pane_type|
+            pane_type.name = 'foo'
+            pane_type.manifest = '{}'
+            pane_type.url = 'http://foo.com/manifest.json'
+          end
         end
       end
     end
@@ -77,7 +79,7 @@ describe PaneUserEntriesController do
       end
       it "returns error when no data provided" do
         lambda {
-          put :update, pane_id: dashboard.panes.first.id
+          put :update, pane_id: dashboard.sections.first.panes.first.id
           response.code.should == "400"
         }.should_not change(PaneUserEntry, :count)
       end

@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 
   has_many :user_dashboards, foreign_key: :github_id, dependent: :delete_all
   has_many :dashboards, through: :user_dashboards
+  has_many :sections, through: :dashboards
   has_many :pane_user_entries, foreign_key: :github_id, dependent: :delete_all
   has_many :pane_type_user_entries, foreign_key: :github_id, dependent: :delete_all
 

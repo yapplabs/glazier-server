@@ -176,7 +176,7 @@ CREATE TABLE panes (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     "position" integer DEFAULT 0,
-    dashboard_id character varying(255)
+    section_id uuid
 );
 
 
@@ -186,6 +186,22 @@ CREATE TABLE panes (
 
 CREATE TABLE schema_migrations (
     version character varying(255) NOT NULL
+);
+
+
+--
+-- Name: sections; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE sections (
+    id uuid NOT NULL,
+    dashboard_id character varying(255),
+    name character varying(255),
+    slug character varying(255),
+    "position" integer,
+    container_type character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -295,6 +311,14 @@ ALTER TABLE ONLY panes
 
 
 --
+-- Name: sections_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY sections
+    ADD CONSTRAINT sections_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: user_dashboards_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -379,19 +403,27 @@ ALTER TABLE ONLY pane_user_entries
 
 
 --
--- Name: panes_dashboard_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY panes
-    ADD CONSTRAINT panes_dashboard_id_fkey FOREIGN KEY (dashboard_id) REFERENCES dashboards(repository) ON DELETE CASCADE;
-
-
---
 -- Name: panes_pane_type_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY panes
     ADD CONSTRAINT panes_pane_type_name_fkey FOREIGN KEY (pane_type_name) REFERENCES pane_types(name) ON DELETE CASCADE;
+
+
+--
+-- Name: panes_section_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY panes
+    ADD CONSTRAINT panes_section_id_fkey FOREIGN KEY (section_id) REFERENCES sections(id) ON DELETE CASCADE;
+
+
+--
+-- Name: sections_dashboard_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY sections
+    ADD CONSTRAINT sections_dashboard_id_fkey FOREIGN KEY (dashboard_id) REFERENCES dashboards(repository) ON DELETE CASCADE;
 
 
 --
@@ -431,3 +463,13 @@ INSERT INTO schema_migrations (version) VALUES ('20130708182155');
 INSERT INTO schema_migrations (version) VALUES ('20130727213043');
 
 INSERT INTO schema_migrations (version) VALUES ('20130822202916');
+
+INSERT INTO schema_migrations (version) VALUES ('20130904171036');
+
+INSERT INTO schema_migrations (version) VALUES ('20130904171554');
+
+INSERT INTO schema_migrations (version) VALUES ('20130904172056');
+
+INSERT INTO schema_migrations (version) VALUES ('20130904172153');
+
+INSERT INTO schema_migrations (version) VALUES ('20130904172927');

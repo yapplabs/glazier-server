@@ -34,7 +34,6 @@ FactoryGirl.define do
     user
   end
 
-
   factory :pane_type_user_entry do
     user
   end
@@ -43,14 +42,19 @@ FactoryGirl.define do
     user
   end
 
+  factory :section do
+    container_type 'board'
+  end
+
   factory :dashboard do
     repository { generate(:repository) }
 
     factory :dashboard_with_default_panes do
       after(:create) do |dashboard|
+        section = create(:section, dashboard: dashboard)
         Dashboard::DEFAULT_PANE_TYPE_NAMES.each do |pane_type_name|
           pane_type = create(:pane_type, name: pane_type_name)
-          create(:pane, pane_type: pane_type, repository: dashboard.repository, dashboard: dashboard)
+          create(:pane, pane_type: pane_type, repository: dashboard.repository, section: section)
           create(:user_dashboard, dashboard: dashboard)
         end
       end
@@ -60,7 +64,8 @@ FactoryGirl.define do
       after(:create) do |dashboard|
         pane_type = create(:pane_type)
         user = create(:user)
-        pane = create(:pane, pane_type: pane_type, repository: dashboard.repository, dashboard: dashboard)
+        section = create(:section, dashboard: dashboard)
+        pane = create(:pane, pane_type: pane_type, repository: dashboard.repository, section: section)
         create(:pane_entry, key: 'foo', value: ActiveSupport::JSON.encode('bar'), pane: pane)
         create(:pane_user_entry, key: 'foo_user', value: ActiveSupport::JSON.encode('bar_user'), pane: pane, user: user)
         create(:pane_type_user_entry, key: 'foo_type_user', value: ActiveSupport::JSON.encode('bar_type_user'), pane_type: pane_type, user: user)

@@ -27,29 +27,39 @@ ActiveRecord::Base.transaction do
 
   Dashboard.create do |dashboard|
     dashboard.repository = 'emberjs/ember.js'
+    dashboard.sections.new do |section|
+      section.name = 'Overview'
+      section.slug = 'overview'
+      section.position = 0
+      section.container_type = 'board'
+      section.panes << Pane.create do |pane|
+        pane.id = 'c37b0ba4-cecc-11e2-8fa4-ef3e5db78e4d'
+        pane.pane_type = issues_pane_type
+      end
 
-    dashboard.panes << Pane.create do |pane|
-      pane.id = 'c37b0ba4-cecc-11e2-8fa4-ef3e5db78e4d'
-      pane.pane_type = issues_pane_type
-    end
-
-    dashboard.panes << Pane.create do |pane|
-      pane.id = 'e66028d8-d477-11e2-ac68-97cedea43709'
-      pane.pane_type = stars_pane_type
+      section.panes << Pane.create do |pane|
+        pane.id = 'e66028d8-d477-11e2-ac68-97cedea43709'
+        pane.pane_type = stars_pane_type
+      end
     end
   end
 
   Dashboard.create do |dashboard|
     dashboard.repository = 'yapplabs/glazier'
+    dashboard.sections.new do |section|
+      section.name = 'Overview'
+      section.slug = 'overview'
+      section.position = 0
+      section.container_type = 'board'
+      section.panes << Pane.create do |pane|
+        pane.id = 'dca13978-cecc-11e2-b9e3-e342ecfc2ff7'
+        pane.pane_type = issues_pane_type
+      end
 
-    dashboard.panes << Pane.create do |pane|
-      pane.id = 'dca13978-cecc-11e2-b9e3-e342ecfc2ff7'
-      pane.pane_type = issues_pane_type
-    end
-
-    dashboard.panes << Pane.create do |pane|
-      pane.id = 'f1274314-d477-11e2-9e9a-9f78f0c9dfa7'
-      pane.pane_type = stars_pane_type
+      section.panes << Pane.create do |pane|
+        pane.id = 'f1274314-d477-11e2-9e9a-9f78f0c9dfa7'
+        pane.pane_type = stars_pane_type
+      end
     end
   end
 

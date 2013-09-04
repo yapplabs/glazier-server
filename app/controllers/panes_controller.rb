@@ -14,18 +14,18 @@ class PanesController < ApplicationController
   def create
     pane_id = params[:pane][:id]
     position = params[:pane][:position]
-    dashboard_id = params[:pane][:dashboard_id]
+    section_id = params[:pane][:section_id]
     pane_type_id = params[:pane][:pane_type_id]
     repository = params[:pane][:repository]
     pane_entries = params[:pane][:pane_entries] || {}
 
     begin
-      dashboard = current_user.dashboards.find(dashboard_id)
+      section = current_user.sections.find(section_id)
     rescue ActiveRecord::RecordNotFound
       return head :forbidden
     end
 
-    pane = dashboard.add_pane(pane_type_id, pane_id, position, repository)
+    pane = section.add_pane(pane_type_id, pane_id, position, repository)
 
     pane_entries.each do |key, value|
       pane_entries[key] = value.to_json
@@ -47,13 +47,13 @@ class PanesController < ApplicationController
   end
 
   def reorder
-    pane_ids = params[:pane_ids]
+    pane_ids = params.fetch(:pane_ids)
     begin
-      dashboard = current_user.dashboards.find(params[:dashboard_id])
+      section = current_user.sections.find(params.fetch(:section_id))
     rescue ActiveRecord::RecordNotFound
       return head :forbidden
     end
-    dashboard.panes.each do |pane|
+    section.panes.each do |pane|
       new_position = pane_ids.index(pane.id)
       if new_position
         pane.position = new_position
