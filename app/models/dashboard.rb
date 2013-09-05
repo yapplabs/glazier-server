@@ -21,6 +21,16 @@ class Dashboard < ActiveRecord::Base
     bootstrap(repository)
   end
 
+  def add_section(attributes)
+    sections.create! do |section|
+      section.id = attributes[:id]
+      section.name = attributes[:name]
+      section.slug = attributes[:slug]
+      section.container_type = attributes[:container_type]
+      section.position = attributes[:position]
+    end
+  end
+
   def self.bootstrap(repository)
     transaction(requires_new: true) do
       create! do |dashboard|
