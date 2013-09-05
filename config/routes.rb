@@ -62,7 +62,7 @@ GlazierServer::Application.routes.draw do
     post "/panes/reorder", to: 'panes#reorder'
 
     resources :pane_types, only: [:index, :show]
-    resources :sections, only: [:create]
+    resources :sections, only: [:create, :destroy]
 
     put    "/pane_entries/:pane_id", to: 'pane_entries#update'
     delete "/pane_entries/:pane_id", to: 'pane_entries#destroy'
