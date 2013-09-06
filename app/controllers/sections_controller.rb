@@ -31,7 +31,7 @@ class SectionsController < ApplicationController
 
     section.destroy
 
-    head :ok
+    render json: {}
   end
 
 private
