@@ -3,6 +3,7 @@ class Section < ActiveRecord::Base
   has_many :panes, order: 'position', dependent: :delete_all
 
   before_create :ensure_id
+  before_destroy :prevent_destroy_of_last_section
 
   attr_accessible :dashboard_id, :name, :position, :slug, :type
 
@@ -31,5 +32,11 @@ class Section < ActiveRecord::Base
 
   def ensure_id
     self.id = SecureRandom.uuid if id.blank?
+  end
+
+  protected
+
+  def prevent_destroy_of_last_section
+    return false unless dashboard.sections.count > 1
   end
 end
