@@ -15,11 +15,21 @@ class SectionsController < ApplicationController
       return head :forbidden
     end
 
-    section.update_attributes(
-      name: params[:section][:name],
-      slug: params[:section][:slug]
-    )
+    section.update_attributes(params[:section].slice(:name, :slug, :position))
     render json: section
+  end
+
+  def update_all
+    params[:sections].each do |section_params|
+      section = Section.find(section_params[:id])
+
+      unless find_editable_dashboard(section.dashboard_id).present?
+        return head :forbidden
+      end
+
+      section.update_attributes(section_params.slice(:name, :slug, :position))
+    end
+    render json: {}
   end
 
   def destroy
