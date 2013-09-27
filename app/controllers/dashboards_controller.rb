@@ -5,7 +5,7 @@ class DashboardsController < ApplicationController
     else
       dashboards = default_dashboards
     end
-    render json: dashboards
+    render json: dashboards.map(&:repository)
   end
 
   def show
