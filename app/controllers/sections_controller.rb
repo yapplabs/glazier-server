@@ -1,4 +1,9 @@
 class SectionsController < ApplicationController
+  def index
+    sections = Section.find(params[:ids])
+    render json: sections
+  end
+
   def create
     dashboard_id = params[:section][:dashboard_id]
     dashboard = find_editable_dashboard(dashboard_id)

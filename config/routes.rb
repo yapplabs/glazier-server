@@ -64,7 +64,7 @@ GlazierServer::Application.routes.draw do
     resources :pane_types, only: [:index, :show]
 
     put '/sections/update_all', to: 'sections#update_all'
-    resources :sections, only: [:create, :update, :destroy]
+    resources :sections, only: [:index, :create, :update, :destroy]
 
     put    "/pane_entries/:pane_id", to: 'pane_entries#update'
     delete "/pane_entries/:pane_id", to: 'pane_entries#destroy'

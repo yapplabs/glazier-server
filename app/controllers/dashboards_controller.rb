@@ -5,7 +5,7 @@ class DashboardsController < ApplicationController
     else
       dashboards = default_dashboards
     end
-    render json: dashboards.map(&:repository)
+    render json: dashboards, each_serializer: ShallowDashboardSerializer
   end
 
   def show

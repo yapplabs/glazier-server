@@ -10,6 +10,14 @@ describe SectionsController do
     controller.stub(current_user: user)
   end
 
+  describe "#index" do
+    it "should render dashboards" do
+      get :index, ids:  [section.id, section2.id]
+      response.should be_success
+      JSON.parse(response.body)['sections'].size.should == 2
+    end
+  end
+
   describe "#update" do
     it "should update the name of the section" do
       put :update, id:  section.id, section: { name: "bar", slug: "bar", container_type: "not-allowed", dashboard_id: "not-allowed" }
