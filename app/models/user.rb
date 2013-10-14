@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
       user.github_id = github_id
       user.github_access_token = github_access_token
       user.github_login = github_user_data.fetch('login')
-      user.email = github_user_data.fetch('email')
+      user.email = github_user_data['email']
       user.name = github_user_data['name']
       user.gravatar_id = github_user_data['gravatar_id']
     end
